@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">Klik Darurat</string>
+    
+    <!-- Emergency Service Activity -->
+    <string name="emergency_service_tv_title">Layanan Darurat</string>
+    <string name="emergency_service_tv_callcenter">Call Center</string>
+    <string name="emergency_service_tv_ambulans">Ambulans</string>
+    <string name="emergency_service_tv_polisi">Polisi</string>
+    <string name="emergency_service_tv_damkar">Damkar</string>
+    <string name="emergency_service_tv_basarnas">Basarnas</string>
+    <string name="emergency_service_tv_bnpb">BNPB</string>
+    <string name="emergency_service_tv_pln">PLN</string>
+    <string name="emergency_service_tv_jasamarga">Jasa Marga</string>
 </resources>
