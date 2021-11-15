@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Klik Darurat</string>
-    
+
     <!-- Emergency Service Activity -->
     <string name="emergency_service_tv_title">Layanan Darurat</string>
     <string name="emergency_service_tv_callcenter">Call Center</string>
@@ -12,8 +12,14 @@
     <string name="emergency_service_tv_pln">PLN</string>
     <string name="emergency_service_tv_jasamarga">Jasa Marga</string>
 
+    <!-- Personal Emergency Contact Activity -->
+    <string name="personal_emergency_contact_tv_title">Kontak Darurat</string>
+    <string name="personal_emergency_contact_tv_a_z">A - Z</string>
+    <string name="personal_emergency_contact_tv_sort">Sort</string>
+    
+
     <!--login&register-->
-    <string name="app_name">ModernLogin</string>
+    <string name="login_title">ModernLogin</string>
     <string name="login_email_hint">Email</string>
     <string name="login_password_hint">Password</string>
 </resources>

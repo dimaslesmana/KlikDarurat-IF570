@@ -17,6 +17,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.KlikDarurat">
         <activity
+            android:name=".PersonalEmergencyContactActivity"
+            android:exported="true" />
+        <activity
             android:name=".EmergencyServiceActivity"
             android:exported="false" />
         <activity
