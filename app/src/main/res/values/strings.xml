@@ -11,4 +11,9 @@
     <string name="emergency_service_tv_bnpb">BNPB</string>
     <string name="emergency_service_tv_pln">PLN</string>
     <string name="emergency_service_tv_jasamarga">Jasa Marga</string>
+
+    <!--login&register-->
+    <string name="app_name">ModernLogin</string>
+    <string name="login_email_hint">Email</string>
+    <string name="login_password_hint">Password</string>
 </resources>
