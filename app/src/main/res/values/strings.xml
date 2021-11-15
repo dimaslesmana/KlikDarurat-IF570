@@ -16,10 +16,24 @@
     <string name="personal_emergency_contact_tv_title">Kontak Darurat</string>
     <string name="personal_emergency_contact_tv_a_z">A - Z</string>
     <string name="personal_emergency_contact_tv_sort">Sort</string>
-    
 
-    <!--login&register-->
-    <string name="login_title">ModernLogin</string>
-    <string name="login_email_hint">Email</string>
-    <string name="login_password_hint">Password</string>
+    <!-- Login Activity -->
+    <string name="login_tv_title">Masuk</string>
+    <string name="login_tv_register_account">Daftar Akun Baru</string>
+
+    <!-- Register Activity -->
+    <string name="register_tv_title">Daftar Akun Baru</string>
+    <string name="register_tv_login_account">Masuk</string>
+
+    <!-- Label -->
+    <string name="label_forgot_password">Lupa Password?</string>
+
+    <!-- Hint -->
+    <string name="hint_full_name">Nama Lengkap</string>
+    <string name="hint_email">Email</string>
+    <string name="hint_password">Password</string>
+
+    <!-- Button -->
+    <string name="button_register">Daftar</string>
+    <string name="button_login">Masuk</string>
 </resources>

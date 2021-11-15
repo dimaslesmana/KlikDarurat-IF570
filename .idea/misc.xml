@@ -6,12 +6,25 @@
         <entry key="..\:/Users/akmal/GitHub/OthersRepo/KlikDarurat-IF570/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1935185185185185" />
         <entry key="..\:/Users/akmal/GitHub/OthersRepo/KlikDarurat-IF570/app/src/main/res/layout/activity_emergency_service.xml" value="0.264" />
         <entry key="..\:/Users/akmal/GitHub/OthersRepo/KlikDarurat-IF570/app/src/main/res/layout/activity_main.xml" value="0.17527173913043478" />
+        <entry key="..\:/Users/dimas/AndroidStudioProjects/Kuliah-AndroidMobileApp/KlikDarurat/app/src/main/res/drawable/button_background_blue.xml" value="0.3828125" />
+        <entry key="..\:/Users/dimas/AndroidStudioProjects/Kuliah-AndroidMobileApp/KlikDarurat/app/src/main/res/drawable/button_background_white.xml" value="0.3828125" />
+        <entry key="..\:/Users/dimas/AndroidStudioProjects/Kuliah-AndroidMobileApp/KlikDarurat/app/src/main/res/drawable/button_rounded.xml" value="0.3828125" />
         <entry key="..\:/Users/dimas/AndroidStudioProjects/Kuliah-AndroidMobileApp/KlikDarurat/app/src/main/res/drawable/ic_add.xml" value="0.3828125" />
+        <entry key="..\:/Users/dimas/AndroidStudioProjects/Kuliah-AndroidMobileApp/KlikDarurat/app/src/main/res/drawable/ic_add_img.xml" value="0.3828125" />
+        <entry key="..\:/Users/dimas/AndroidStudioProjects/Kuliah-AndroidMobileApp/KlikDarurat/app/src/main/res/drawable/ic_back_img.xml" value="0.3828125" />
+        <entry key="..\:/Users/dimas/AndroidStudioProjects/Kuliah-AndroidMobileApp/KlikDarurat/app/src/main/res/drawable/ic_launcher_background.xml" value="0.3828125" />
+        <entry key="..\:/Users/dimas/AndroidStudioProjects/Kuliah-AndroidMobileApp/KlikDarurat/app/src/main/res/drawable/ic_login_hero.xml" value="0.3828125" />
+        <entry key="..\:/Users/dimas/AndroidStudioProjects/Kuliah-AndroidMobileApp/KlikDarurat/app/src/main/res/drawable/ic_register_hero.xml" value="0.3828125" />
+        <entry key="..\:/Users/dimas/AndroidStudioProjects/Kuliah-AndroidMobileApp/KlikDarurat/app/src/main/res/drawable/ic_side_bg.xml" value="0.3828125" />
+        <entry key="..\:/Users/dimas/AndroidStudioProjects/Kuliah-AndroidMobileApp/KlikDarurat/app/src/main/res/drawable/ic_sort.xml" value="0.3828125" />
         <entry key="..\:/Users/dimas/AndroidStudioProjects/Kuliah-AndroidMobileApp/KlikDarurat/app/src/main/res/drawable/ic_sort_by_alpha.xml" value="0.3828125" />
         <entry key="..\:/Users/dimas/AndroidStudioProjects/Kuliah-AndroidMobileApp/KlikDarurat/app/src/main/res/layout/activity_emergency_service.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/dimas/AndroidStudioProjects/Kuliah-AndroidMobileApp/KlikDarurat/app/src/main/res/layout/activity_login.xml" value="0.33" />
         <entry key="..\:/Users/dimas/AndroidStudioProjects/Kuliah-AndroidMobileApp/KlikDarurat/app/src/main/res/layout/activity_main.xml" value="0.2957427536231884" />
         <entry key="..\:/Users/dimas/AndroidStudioProjects/Kuliah-AndroidMobileApp/KlikDarurat/app/src/main/res/layout/activity_main2.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/dimas/AndroidStudioProjects/Kuliah-AndroidMobileApp/KlikDarurat/app/src/main/res/layout/activity_mainmenu.xml" value="0.35778985507246375" />
         <entry key="..\:/Users/dimas/AndroidStudioProjects/Kuliah-AndroidMobileApp/KlikDarurat/app/src/main/res/layout/activity_personal_emergency_contact.xml" value="0.33" />
+        <entry key="..\:/Users/dimas/AndroidStudioProjects/Kuliah-AndroidMobileApp/KlikDarurat/app/src/main/res/layout/activity_register.xml" value="0.36277173913043476" />
         <entry key="..\:/Users/dimas/AndroidStudioProjects/Kuliah-AndroidMobileApp/KlikDarurat/app/src/main/res/layout/content_main.xml" value="0.20520833333333333" />
         <entry key="..\:/Users/dimas/AndroidStudioProjects/Kuliah-AndroidMobileApp/KlikDarurat/app/src/main/res/layout/fragment_second.xml" value="0.20520833333333333" />
         <entry key="..\:/Users/dimas/AndroidStudioProjects/Kuliah-AndroidMobileApp/KlikDarurat/app/src/main/res/layout/item_row_personal_emergency_contact.xml" value="0.33" />
@@ -28,7 +41,7 @@
   <component name="VisualizationToolProject">
     <option name="state">
       <ProjectState>
-        <option name="scale" value="0.2694746376811594" />
+        <option name="scale" value="0.1" />
       </ProjectState>
     </option>
   </component>

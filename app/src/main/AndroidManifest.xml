@@ -21,16 +21,18 @@
             android:exported="true" />
         <activity
             android:name=".EmergencyServiceActivity"
-            android:exported="false" />
+            android:exported="true" />
+        <activity
+            android:name=".RegisterActivity"
+            android:theme="@style/Theme.KlikDarurat.NoActionBar"
+            android:exported="true" />
+        <activity
+            android:name=".LoginActivity"
+            android:theme="@style/Theme.KlikDarurat.NoActionBar"
+            android:exported="true" />
         <activity
             android:name=".MainActivity"
-            android:exported="true"/>
-            <activity
-                android:name=".RegisterActivity"
-                android:theme="@style/AppTheme.NoActionBar"/>
-            <activity
-                android:name=".LoginActivity"
-                android:theme="@style/AppTheme.NoActionBar">
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

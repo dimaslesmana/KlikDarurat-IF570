@@ -1,26 +1,47 @@
-package id.ac.umn.loginregister;
+package id.ac.umn.if570.titik.koma.klikdarurat;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
+    private Button btnLogin;
+    private TextView tvForgotPassword;
+    private TextView tvRegisterAccount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //for changing status bar icon color
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-        }
         setContentView(R.layout.activity_login);
+
+        initView();
+
+        btnLogin.setOnClickListener(this);
+        tvForgotPassword.setOnClickListener(this);
+        tvRegisterAccount.setOnClickListener(this);
     }
 
-    public void onLoginClick(View view){
-        startActivity(new Intent( packageContext: this, RegisterActivity.class));
-        overridePendingTransition(R.anim.slide_in_right, R.anim.stay);
+    @Override
+    public void onClick(View v) {
+        int viewId = v.getId();
+
+        if (viewId == btnLogin.getId()) {
+            Log.d("LoginActivity", "Login button clicked");
+        } else if (viewId == tvForgotPassword.getId()) {
+            Log.d("LoginActivity", "Forgot Password clicked");
+        } else if (viewId == tvRegisterAccount.getId()) {
+            startActivity(new Intent(this, RegisterActivity.class));
+        }
+    }
+
+    private void initView() {
+        btnLogin = findViewById(R.id.button_login_login);
+        tvForgotPassword = findViewById(R.id.tv_login_forgot_password);
+        tvRegisterAccount = findViewById(R.id.tv_login_register_account);
     }
 }
