@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tv_personal_emergency_contact_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="24dp"
+        android:text="@string/personal_emergency_contact_tv_title"
+        android:textAlignment="center"
+        android:textColor="@color/blue"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/searchview_personal_emergency_contact"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:background="@color/gray"
+        app:layout_constraintTop_toBottomOf="@id/tv_personal_emergency_contact_title"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_personal_emergency_contact_a_z"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:padding="8dp"
+        android:text="@string/personal_emergency_contact_tv_a_z"
+        android:textSize="16sp"
+        android:textColor="@color/blue"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintTop_toBottomOf="@id/searchview_personal_emergency_contact"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/linearlayout_personal_emergency_contact_sort"
+        app:layout_constraintBottom_toTopOf="@id/rv_personal_emergency_contact" />
+
+    <LinearLayout
+        android:id="@+id/linearlayout_personal_emergency_contact_sort"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:orientation="horizontal"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintTop_toBottomOf="@id/searchview_personal_emergency_contact"
+        app:layout_constraintLeft_toRightOf="@id/tv_personal_emergency_contact_a_z"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/rv_personal_emergency_contact">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingEnd="4dp"
+            android:text="@string/personal_emergency_contact_tv_sort"
+            android:textColor="@color/blue"
+            android:textSize="16sp" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@color/transparent"
+            app:tint="@color/blue"
+            app:srcCompat="@drawable/ic_sort" />
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_personal_emergency_contact"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        tools:listitem="@layout/item_row_personal_emergency_contact"
+        app:layout_constraintTop_toBottomOf="@id/tv_personal_emergency_contact_a_z"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
