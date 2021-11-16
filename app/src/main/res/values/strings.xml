@@ -56,4 +56,5 @@
     <!-- Button -->
     <string name="button_register">Daftar</string>
     <string name="button_login">Masuk</string>
+    <string name="title_activity_maps">MapsActivity</string>
 </resources>
