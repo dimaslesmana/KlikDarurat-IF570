@@ -11,4 +11,25 @@
     <string name="emergency_service_tv_bnpb">BNPB</string>
     <string name="emergency_service_tv_pln">PLN</string>
     <string name="emergency_service_tv_jasamarga">Jasa Marga</string>
+
+    <!-- User Profile Activity -->
+    <string name="user_profile_tv_title">Profil Saya</string>
+    <string name="user_profile_tv_label_nama">Nama</string>
+    <string name="user_profile_tv_nama">John Doe</string>
+    <string name="user_profile_tv_label_nomor">No. Telp</string>
+    <string name="user_profile_tv_nomor">0812-3456-7890</string>
+    <string name="user_profile_tv_label_email">Email</string>
+    <string name="user_profile_tv_email">John_doe@email.com</string>
+    <string name="user_profile_tv_label_alamat">Alamat</string>
+    <string name="user_profile_tv_alamat">Jl. Ayo Maju No. 2</string>
+    <string name="user_profile_tv_edit">Edit Profile</string>
+
+    <!-- Edit User Profile Activity -->
+    <string name="edit_user_profile_tv_title">Edit Profile</string>
+    <string name="edit_user_profile_tv_nama">Nama</string>
+    <string name="edit_user_profile_tv_nomor">No. Telp</string>
+    <string name="edit_user_profile_tv_email">Email</string>
+    <string name="edit_user_profile_tv_alamat">Alamat</string>
+    <string name="edit_user_profile_tv_simpan">Simpan</string>
+
 </resources>

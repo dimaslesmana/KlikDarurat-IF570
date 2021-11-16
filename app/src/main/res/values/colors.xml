@@ -11,4 +11,6 @@
     <!-- Custom -->
     <color name="blue">#FF0094FF</color>
     <color name="gray">#FFE5E5E5</color>
+
+    <color name="mtrl_textinput_default_box_stroke_color">#FF0094FF</color>
 </resources>

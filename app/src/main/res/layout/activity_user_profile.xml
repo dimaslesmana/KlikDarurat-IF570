@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".UserProfileActivity">
+
+    <!-- Title Profile-->
+    <TextView
+        android:id="@+id/tv_profile_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/user_profile_tv_title"
+        android:textColor="@color/blue"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintVertical_bias="0.1"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <!-- Circle Image View -->
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/iv_profile_avatar"
+        android:layout_width="96dp"
+        android:layout_height="96dp"
+        android:layout_margin="8dp"
+        android:src="@drawable/ic_avatar"
+        app:civ_border_width="20dp"
+        app:civ_border_color="@color/purple_200"
+        app:layout_constraintTop_toBottomOf="@id/tv_profile_title"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+    <!-- Label Nama -->
+    <TextView
+        android:id="@+id/tv_profile_nama_label"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:layout_margin="16dp"
+        android:text="@string/user_profile_tv_label_nama"
+        android:textStyle="bold"
+        app:layout_constraintHorizontal_weight="2"
+        app:layout_constraintTop_toBottomOf="@id/iv_profile_avatar"
+        app:layout_constraintRight_toLeftOf="@+id/tv_profile_nama"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
+    <!-- Nama -->
+    <TextView
+        android:id="@+id/tv_profile_nama"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:layout_margin="16dp"
+        android:text="@string/user_profile_tv_nama"
+        app:layout_constraintHorizontal_weight="4"
+        app:layout_constraintTop_toBottomOf="@+id/iv_profile_avatar"
+        app:layout_constraintLeft_toRightOf="@+id/tv_profile_nama_label"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/blue"
+        app:layout_constraintTop_toBottomOf="@id/tv_profile_nama"/>
+
+    <!-- Label Nomor Telepon -->
+    <TextView
+        android:id="@+id/tv_profile_nomor_label"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:layout_margin="16dp"
+        android:text="@string/user_profile_tv_label_nomor"
+        android:textStyle="bold"
+        app:layout_constraintHorizontal_weight="2"
+        app:layout_constraintTop_toBottomOf="@id/tv_profile_nama"
+        app:layout_constraintRight_toLeftOf="@id/tv_profile_nomor"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
+    <!-- Nomor Telepon -->
+    <TextView
+        android:id="@+id/tv_profile_nomor"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:layout_margin="16dp"
+        android:text="@string/user_profile_tv_nomor"
+        app:layout_constraintHorizontal_weight="4"
+        app:layout_constraintTop_toBottomOf="@+id/tv_profile_nama"
+        app:layout_constraintLeft_toRightOf="@+id/tv_profile_nomor_label"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/blue"
+        app:layout_constraintTop_toBottomOf="@id/tv_profile_nomor"/>
+
+    <!-- Label Email -->
+    <TextView
+        android:id="@+id/tv_profile_email_label"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:layout_margin="16dp"
+        android:text="@string/user_profile_tv_label_email"
+        android:textStyle="bold"
+        app:layout_constraintHorizontal_weight="2"
+        app:layout_constraintTop_toBottomOf="@id/tv_profile_nomor_label"
+        app:layout_constraintRight_toLeftOf="@id/tv_profile_email"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
+    <!-- Email -->
+    <TextView
+        android:id="@+id/tv_profile_email"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:layout_margin="16dp"
+        android:text="@string/user_profile_tv_email"
+        app:layout_constraintHorizontal_weight="4"
+        app:layout_constraintTop_toBottomOf="@+id/tv_profile_nomor"
+        app:layout_constraintLeft_toRightOf="@+id/tv_profile_email_label"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/blue"
+        app:layout_constraintTop_toBottomOf="@id/tv_profile_email"/>
+
+    <!-- Label Alamat -->
+    <TextView
+        android:id="@+id/tv_profile_alamat_label"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:layout_margin="16dp"
+        android:text="@string/user_profile_tv_label_alamat"
+        android:textStyle="bold"
+        app:layout_constraintHorizontal_weight="2"
+        app:layout_constraintTop_toBottomOf="@id/tv_profile_email_label"
+        app:layout_constraintRight_toLeftOf="@+id/tv_profile_alamat"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
+    <!-- Alamat  -->
+    <TextView
+        android:id="@+id/tv_profile_alamat"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:layout_margin="16dp"
+        android:text="@string/user_profile_tv_alamat"
+        app:layout_constraintHorizontal_weight="4"
+        app:layout_constraintTop_toBottomOf="@id/tv_profile_email"
+        app:layout_constraintLeft_toRightOf="@+id/tv_profile_alamat_label"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/blue"
+        app:layout_constraintTop_toBottomOf="@id/tv_profile_alamat"/>
+
+    <!-- Icon Edit -->
+    <ImageView
+        android:id="@+id/iv_profile_edit"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:padding="8dp"
+        android:layout_margin="48dp"
+        android:src="@drawable/ic_edit"
+        app:layout_constraintTop_toBottomOf="@id/tv_profile_alamat"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+    <!-- Edit Profile -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/user_profile_tv_edit"
+        android:textColor="@color/blue"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/iv_profile_edit"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
