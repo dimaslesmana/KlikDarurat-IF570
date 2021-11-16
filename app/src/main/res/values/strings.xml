@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Klik Darurat</string>
 
-    <!-- Emergency Service Activity -->
+    <!-- Emergency Service -->
     <string name="emergency_service_tv_title">Layanan Darurat</string>
     <string name="emergency_service_tv_callcenter">Call Center</string>
     <string name="emergency_service_tv_ambulans">Ambulans</string>
@@ -12,22 +12,25 @@
     <string name="emergency_service_tv_pln">PLN</string>
     <string name="emergency_service_tv_jasamarga">Jasa Marga</string>
 
-    <!-- User Profile Activity -->
-    <string name="user_profile_tv_title">Profil Saya</string>
+    <!-- Emergency Service Location -->
+    <string name="emergency_service_location_tv_title">Lokasi Layanan Darurat</string>
 
-    <!-- Edit User Profile Activity -->
-    <string name="edit_user_profile_tv_title">Edit Profile</string>
-
-    <!-- Personal Emergency Contact Activity -->
+    <!-- Personal Emergency Contact -->
     <string name="personal_emergency_contact_tv_title">Kontak Darurat</string>
     <string name="personal_emergency_contact_tv_a_z">A - Z</string>
     <string name="personal_emergency_contact_tv_sort">Sort</string>
 
-    <!-- Login Activity -->
+    <!-- User Profile -->
+    <string name="user_profile_tv_title">Profil Saya</string>
+
+    <!-- Edit User Profile -->
+    <string name="edit_user_profile_tv_title">Edit Profile</string>
+
+    <!-- Login -->
     <string name="login_tv_title">Masuk</string>
     <string name="login_tv_register_account">Daftar Akun Baru</string>
 
-    <!-- Register Activity -->
+    <!-- Register -->
     <string name="register_tv_title">Daftar Akun Baru</string>
     <string name="register_tv_login_account">Masuk</string>
 
@@ -50,6 +53,12 @@
     <!-- Button -->
     <string name="button_register">Daftar</string>
     <string name="button_login">Masuk</string>
+
+    <!-- Bottom Navigation -->
+    <string name="nav_emergency_service">Layanan Darurat</string>
+    <string name="nav_personal_emergency_contact">Kontak Darurat</string>
+    <string name="nav_emergency_service_location">Lokasi</string>
+    <string name="nav_user_profile">Profil</string>
 
     <string name="title_activity_maps">MapsActivity</string>
 </resources>

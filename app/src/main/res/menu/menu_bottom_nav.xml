@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_menu_emergency_service"
+        android:icon="@drawable/ic_menu_round_medical_services"
+        android:title="@string/nav_emergency_service" />
+
+    <item
+        android:id="@+id/nav_menu_personal_emergency_contact"
+        android:icon="@drawable/ic_menu_round_contacts"
+        android:title="@string/nav_personal_emergency_contact" />
+
+    <item
+        android:id="@+id/nav_menu_emergency_service_location"
+        android:icon="@drawable/ic_menu_round_map"
+        android:title="@string/nav_emergency_service_location" />
+
+    <item
+        android:id="@+id/nav_menu_user_profile"
+        android:icon="@drawable/ic_menu_round_account_circle"
+        android:title="@string/nav_user_profile" />
+
+</menu>
