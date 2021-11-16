@@ -10,13 +10,10 @@
     <color name="transparent">#00000000</color>
 
     <!-- Custom -->
-    <color name="blue">#FF0094FF</color>
+    <color name="light_blue_500">#FF03A9f4</color>
+    <color name="light_blue_700">#FF0288D1</color>
     <color name="gray">#FFE5E5E5</color>
 
-<<<<<<< HEAD
-    <color name="mtrl_textinput_default_box_stroke_color">#FF0094FF</color>
-=======
-    <!-- for login -->
     <color name="colorPrimary">#FFFFFF</color>
     <color name="colorPrimaryDark">#000</color>
     <color name="colorAccent">#0094FF</color>
@@ -28,6 +25,4 @@
     <color name="login_bk_color">#fff</color>
     <color name="whiteTextColor">#fff</color>
     <color name="primaryTextColor">#0094FF</color>
-
->>>>>>> 5f81900cb307682b10e8034eba5eaee8cf462247
 </resources>

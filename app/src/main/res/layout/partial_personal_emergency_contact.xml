@@ -13,7 +13,7 @@
         android:paddingTop="24dp"
         android:text="@string/personal_emergency_contact_tv_title"
         android:textAlignment="center"
-        android:textColor="@color/blue"
+        android:textColor="@color/light_blue_500"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintTop_toTopOf="parent"
@@ -36,7 +36,7 @@
         android:padding="8dp"
         android:text="@string/personal_emergency_contact_tv_a_z"
         android:textSize="16sp"
-        android:textColor="@color/blue"
+        android:textColor="@color/light_blue_500"
         app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintTop_toBottomOf="@id/searchview_personal_emergency_contact"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -60,14 +60,14 @@
             android:layout_height="match_parent"
             android:paddingEnd="4dp"
             android:text="@string/personal_emergency_contact_tv_sort"
-            android:textColor="@color/blue"
+            android:textColor="@color/light_blue_500"
             android:textSize="16sp" />
 
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:background="@color/transparent"
-            app:tint="@color/blue"
+            app:tint="@color/light_blue_500"
             app:srcCompat="@drawable/ic_sort" />
     </LinearLayout>
 

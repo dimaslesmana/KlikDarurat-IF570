@@ -59,6 +59,13 @@
             android:exported="true"
             android:theme="@style/Theme.KlikDarurat.NoActionBar" />
         <activity
+            android:name=".UserProfileActivity"
+            android:exported="true"
+            android:theme="@style/Theme.KlikDarurat.NoActionBar"/>
+        <activity
+            android:name=".EditUserProfileActivity"
+            android:exported="true" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
