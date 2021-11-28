@@ -1,369 +1,391 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:fillViewport="true"
     tools:context=".EmergencyServiceFragment">
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="24dp"
-        android:text="@string/emergency_service_tv_title"
-        android:textAlignment="center"
-        android:textColor="@color/light_blue_500"
-        android:textSize="24sp"
-        android:textStyle="bold" />
+        android:orientation="vertical">
 
-    <GridLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:columnCount="2"
-        android:paddingHorizontal="24dp"
-        android:rowCount="4">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="24dp"
+            android:text="@string/emergency_service_tv_title"
+            android:gravity="center"
+            android:textColor="@color/light_blue_500"
+            android:textSize="24sp"
+            android:textStyle="bold" />
 
-        <!-- Row 1 -->
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/card_emergency_service_callcenter"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_row="0"
-            android:layout_rowWeight="1"
-            android:layout_column="0"
-            android:layout_columnWeight="1"
-            android:clickable="true"
-            android:focusable="true"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="10dp"
-            app:cardMaxElevation="12dp"
-            app:cardPreventCornerOverlap="true"
-            app:cardUseCompatPadding="true"
-            app:strokeColor="@color/light_blue_500"
-            app:strokeWidth="1dp">
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:columnCount="2"
+            android:paddingHorizontal="24dp"
+            android:rowCount="4">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+            <!-- Row 1 -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_emergency_service_callcenter"
+                android:layout_width="0dp"
+                android:layout_height="160dp"
+                android:layout_row="0"
+                android:layout_rowWeight="1"
+                android:layout_column="0"
+                android:layout_columnWeight="1"
+                android:clickable="true"
+                android:focusable="true"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="10dp"
+                app:cardMaxElevation="12dp"
+                app:cardPreventCornerOverlap="true"
+                app:cardUseCompatPadding="true"
+                app:strokeColor="@color/light_blue_500"
+                app:strokeWidth="1dp">
 
-                <ImageView
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:contentDescription="@string/emergency_service_tv_callcenter"
-                    android:padding="12dp"
-                    android:src="@drawable/ic_callcenter" />
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
 
-                <TextView
+                    <ImageView
+                        android:id="@+id/iv_emergency_service_callcenter"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:contentDescription="@string/emergency_service_tv_callcenter"
+                        android:padding="12dp"
+                        tools:src="@drawable/ic_callcenter" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/gray"
+                        android:paddingVertical="12dp"
+                        android:text="@string/emergency_service_tv_callcenter"
+                        android:gravity="center"
+                        android:textColor="@color/light_blue_500" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_emergency_service_ambulans"
+                android:layout_width="0dp"
+                android:layout_height="160dp"
+                android:layout_row="0"
+                android:layout_rowWeight="1"
+                android:layout_column="1"
+                android:layout_columnWeight="1"
+                android:clickable="true"
+                android:focusable="true"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="10dp"
+                app:cardMaxElevation="12dp"
+                app:cardPreventCornerOverlap="true"
+                app:cardUseCompatPadding="true"
+                app:strokeColor="@color/light_blue_500"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/gray"
-                    android:paddingVertical="12dp"
-                    android:text="@string/emergency_service_tv_callcenter"
-                    android:textAlignment="center"
-                    android:textColor="@color/light_blue_500" />
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/card_emergency_service_ambulans"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_row="0"
-            android:layout_rowWeight="1"
-            android:layout_column="1"
-            android:layout_columnWeight="1"
-            android:clickable="true"
-            android:focusable="true"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="10dp"
-            app:cardMaxElevation="12dp"
-            app:cardPreventCornerOverlap="true"
-            app:cardUseCompatPadding="true"
-            app:strokeColor="@color/light_blue_500"
-            app:strokeWidth="1dp">
+                    <ImageView
+                        android:id="@+id/iv_emergency_service_ambulans"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:contentDescription="@string/emergency_service_tv_ambulans"
+                        android:padding="12dp"
+                        tools:src="@drawable/ic_ambulans" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/gray"
+                        android:paddingVertical="12dp"
+                        android:text="@string/emergency_service_tv_ambulans"
+                        android:textAlignment="center"
+                        android:gravity="center"
+                        android:textColor="@color/light_blue_500" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
 
-                <ImageView
+            <!-- Row 2 -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_emergency_service_polisi"
+                android:layout_width="0dp"
+                android:layout_height="160dp"
+                android:layout_row="1"
+                android:layout_rowWeight="1"
+                android:layout_column="0"
+                android:layout_columnWeight="1"
+                android:clickable="true"
+                android:focusable="true"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="10dp"
+                app:cardMaxElevation="12dp"
+                app:cardPreventCornerOverlap="true"
+                app:cardUseCompatPadding="true"
+                app:strokeColor="@color/light_blue_500"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:contentDescription="@string/emergency_service_tv_ambulans"
-                    android:padding="12dp"
-                    android:src="@drawable/ic_ambulans" />
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
 
-                <TextView
+                    <ImageView
+                        android:id="@+id/iv_emergency_service_polisi"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:contentDescription="@string/emergency_service_tv_polisi"
+                        android:padding="12dp"
+                        tools:src="@drawable/ic_polisi" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/gray"
+                        android:paddingVertical="12dp"
+                        android:text="@string/emergency_service_tv_polisi"
+                        android:textAlignment="center"
+                        android:gravity="center"
+                        android:textColor="@color/light_blue_500" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_emergency_service_damkar"
+                android:layout_width="0dp"
+                android:layout_height="160dp"
+                android:layout_row="1"
+                android:layout_rowWeight="1"
+                android:layout_column="1"
+                android:layout_columnWeight="1"
+                android:clickable="true"
+                android:focusable="true"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="10dp"
+                app:cardMaxElevation="12dp"
+                app:cardPreventCornerOverlap="true"
+                app:cardUseCompatPadding="true"
+                app:strokeColor="@color/light_blue_500"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/gray"
-                    android:paddingVertical="12dp"
-                    android:text="@string/emergency_service_tv_ambulans"
-                    android:textAlignment="center"
-                    android:textColor="@color/light_blue_500" />
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
 
-        <!-- Row 2 -->
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/card_emergency_service_polisi"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_row="1"
-            android:layout_rowWeight="1"
-            android:layout_column="0"
-            android:layout_columnWeight="1"
-            android:clickable="true"
-            android:focusable="true"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="10dp"
-            app:cardMaxElevation="12dp"
-            app:cardPreventCornerOverlap="true"
-            app:cardUseCompatPadding="true"
-            app:strokeColor="@color/light_blue_500"
-            app:strokeWidth="1dp">
+                    <ImageView
+                        android:id="@+id/iv_emergency_service_damkar"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:contentDescription="@string/emergency_service_tv_damkar"
+                        android:padding="12dp"
+                        tools:src="@drawable/ic_damkar" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/gray"
+                        android:paddingVertical="12dp"
+                        android:text="@string/emergency_service_tv_damkar"
+                        android:textAlignment="center"
+                        android:gravity="center"
+                        android:textColor="@color/light_blue_500" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
 
-                <ImageView
+            <!-- Row 3 -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_emergency_service_basarnas"
+                android:layout_width="0dp"
+                android:layout_height="160dp"
+                android:layout_row="2"
+                android:layout_rowWeight="1"
+                android:layout_column="0"
+                android:layout_columnWeight="1"
+                android:clickable="true"
+                android:focusable="true"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="10dp"
+                app:cardMaxElevation="12dp"
+                app:cardPreventCornerOverlap="true"
+                app:cardUseCompatPadding="true"
+                app:strokeColor="@color/light_blue_500"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:contentDescription="@string/emergency_service_tv_polisi"
-                    android:padding="12dp"
-                    android:src="@drawable/ic_polisi" />
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
 
-                <TextView
+                    <ImageView
+                        android:id="@+id/iv_emergency_service_basarnas"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:contentDescription="@string/emergency_service_tv_basarnas"
+                        android:padding="12dp"
+                        tools:src="@drawable/ic_basarnas" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/gray"
+                        android:paddingVertical="12dp"
+                        android:text="@string/emergency_service_tv_basarnas"
+                        android:textAlignment="center"
+                        android:gravity="center"
+                        android:textColor="@color/light_blue_500" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_emergency_service_bnpb"
+                android:layout_width="0dp"
+                android:layout_height="160dp"
+                android:layout_row="2"
+                android:layout_rowWeight="1"
+                android:layout_column="1"
+                android:layout_columnWeight="1"
+                android:clickable="true"
+                android:focusable="true"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="10dp"
+                app:cardMaxElevation="12dp"
+                app:cardPreventCornerOverlap="true"
+                app:cardUseCompatPadding="true"
+                app:strokeColor="@color/light_blue_500"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/gray"
-                    android:paddingVertical="12dp"
-                    android:text="@string/emergency_service_tv_polisi"
-                    android:textAlignment="center"
-                    android:textColor="@color/light_blue_500" />
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/card_emergency_service_damkar"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_row="1"
-            android:layout_rowWeight="1"
-            android:layout_column="1"
-            android:layout_columnWeight="1"
-            android:clickable="true"
-            android:focusable="true"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="10dp"
-            app:cardMaxElevation="12dp"
-            app:cardPreventCornerOverlap="true"
-            app:cardUseCompatPadding="true"
-            app:strokeColor="@color/light_blue_500"
-            app:strokeWidth="1dp">
+                    <ImageView
+                        android:id="@+id/iv_emergency_service_bnpb"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:contentDescription="@string/emergency_service_tv_bnpb"
+                        android:padding="12dp"
+                        tools:src="@drawable/ic_bnpb" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/gray"
+                        android:paddingVertical="12dp"
+                        android:text="@string/emergency_service_tv_bnpb"
+                        android:textAlignment="center"
+                        android:gravity="center"
+                        android:textColor="@color/light_blue_500" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
 
-                <ImageView
+            <!-- Row 4 -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_emergency_service_pln"
+                android:layout_width="0dp"
+                android:layout_height="160dp"
+                android:layout_row="3"
+                android:layout_rowWeight="1"
+                android:layout_column="0"
+                android:layout_columnWeight="1"
+                android:clickable="true"
+                android:focusable="true"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="10dp"
+                app:cardMaxElevation="12dp"
+                app:cardPreventCornerOverlap="true"
+                app:cardUseCompatPadding="true"
+                app:strokeColor="@color/light_blue_500"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:contentDescription="@string/emergency_service_tv_damkar"
-                    android:padding="12dp"
-                    android:src="@drawable/ic_damkar" />
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
 
-                <TextView
+                    <ImageView
+                        android:id="@+id/iv_emergency_service_pln"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:contentDescription="@string/emergency_service_tv_pln"
+                        android:padding="12dp"
+                        tools:src="@drawable/ic_pln" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/gray"
+                        android:paddingVertical="12dp"
+                        android:text="@string/emergency_service_tv_pln"
+                        android:textAlignment="center"
+                        android:gravity="center"
+                        android:textColor="@color/light_blue_500" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_emergency_service_jasamarga"
+                android:layout_width="0dp"
+                android:layout_height="160dp"
+                android:layout_row="3"
+                android:layout_rowWeight="1"
+                android:layout_column="1"
+                android:layout_columnWeight="1"
+                android:clickable="true"
+                android:focusable="true"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="10dp"
+                app:cardMaxElevation="12dp"
+                app:cardPreventCornerOverlap="true"
+                app:cardUseCompatPadding="true"
+                app:strokeColor="@color/light_blue_500"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/gray"
-                    android:paddingVertical="12dp"
-                    android:text="@string/emergency_service_tv_damkar"
-                    android:textAlignment="center"
-                    android:textColor="@color/light_blue_500" />
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
 
-        <!-- Row 3 -->
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/card_emergency_service_basarnas"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_row="2"
-            android:layout_rowWeight="1"
-            android:layout_column="0"
-            android:layout_columnWeight="1"
-            android:clickable="true"
-            android:focusable="true"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="10dp"
-            app:cardMaxElevation="12dp"
-            app:cardPreventCornerOverlap="true"
-            app:cardUseCompatPadding="true"
-            app:strokeColor="@color/light_blue_500"
-            app:strokeWidth="1dp">
+                    <ImageView
+                        android:id="@+id/iv_emergency_service_jasamarga"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:contentDescription="@string/emergency_service_tv_jasamarga"
+                        android:padding="12dp"
+                        tools:src="@drawable/ic_jasamarga" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/gray"
+                        android:paddingVertical="12dp"
+                        android:text="@string/emergency_service_tv_jasamarga"
+                        android:textAlignment="center"
+                        android:gravity="center"
+                        android:textColor="@color/light_blue_500" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
 
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:contentDescription="@string/emergency_service_tv_basarnas"
-                    android:padding="12dp"
-                    android:src="@drawable/ic_basarnas" />
+        </GridLayout>
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/gray"
-                    android:paddingVertical="12dp"
-                    android:text="@string/emergency_service_tv_basarnas"
-                    android:textAlignment="center"
-                    android:textColor="@color/light_blue_500" />
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
+    </LinearLayout>
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/card_emergency_service_bnpb"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_row="2"
-            android:layout_rowWeight="1"
-            android:layout_column="1"
-            android:layout_columnWeight="1"
-            android:clickable="true"
-            android:focusable="true"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="10dp"
-            app:cardMaxElevation="12dp"
-            app:cardPreventCornerOverlap="true"
-            app:cardUseCompatPadding="true"
-            app:strokeColor="@color/light_blue_500"
-            app:strokeWidth="1dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:contentDescription="@string/emergency_service_tv_bnpb"
-                    android:padding="12dp"
-                    android:src="@drawable/ic_bnpb" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/gray"
-                    android:paddingVertical="12dp"
-                    android:text="@string/emergency_service_tv_bnpb"
-                    android:textAlignment="center"
-                    android:textColor="@color/light_blue_500" />
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-
-        <!-- Row 4 -->
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/card_emergency_service_pln"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_row="3"
-            android:layout_rowWeight="1"
-            android:layout_column="0"
-            android:layout_columnWeight="1"
-            android:clickable="true"
-            android:focusable="true"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="10dp"
-            app:cardMaxElevation="12dp"
-            app:cardPreventCornerOverlap="true"
-            app:cardUseCompatPadding="true"
-            app:strokeColor="@color/light_blue_500"
-            app:strokeWidth="1dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:contentDescription="@string/emergency_service_tv_pln"
-                    android:padding="12dp"
-                    android:src="@drawable/ic_pln" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/gray"
-                    android:paddingVertical="12dp"
-                    android:text="@string/emergency_service_tv_pln"
-                    android:textAlignment="center"
-                    android:textColor="@color/light_blue_500" />
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/card_emergency_service_jasamarga"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_row="3"
-            android:layout_rowWeight="1"
-            android:layout_column="1"
-            android:layout_columnWeight="1"
-            android:clickable="true"
-            android:focusable="true"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="10dp"
-            app:cardMaxElevation="12dp"
-            app:cardPreventCornerOverlap="true"
-            app:cardUseCompatPadding="true"
-            app:strokeColor="@color/light_blue_500"
-            app:strokeWidth="1dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:contentDescription="@string/emergency_service_tv_jasamarga"
-                    android:padding="12dp"
-                    android:src="@drawable/ic_jasamarga" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/gray"
-                    android:paddingVertical="12dp"
-                    android:text="@string/emergency_service_tv_jasamarga"
-                    android:textAlignment="center"
-                    android:textColor="@color/light_blue_500" />
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-
-    </GridLayout>
-
-</LinearLayout>
+</ScrollView>
