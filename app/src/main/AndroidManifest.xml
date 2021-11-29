@@ -46,10 +46,10 @@
             android:exported="false"
             android:label="@string/title_activity_maps"
             android:theme="@style/Theme.KlikDarurat.NoActionBar" />
-        <activity
+      <!--  <activity
             android:name=".RegisterActivity"
             android:exported="false"
-            android:theme="@style/Theme.KlikDarurat.NoActionBar" />
+            android:theme="@style/Theme.KlikDarurat.NoActionBar" /> -->
         <activity
             android:name=".LoginActivity"
             android:exported="false"
@@ -58,7 +58,7 @@
             android:name=".EditUserProfileActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".RegisterActivity"
             android:exported="true"
             android:theme="@style/Theme.KlikDarurat.NoActionBar" >
             <intent-filter>

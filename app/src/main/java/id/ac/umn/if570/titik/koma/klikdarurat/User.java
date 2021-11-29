@@ -10,4 +10,8 @@ public class User {
         this.full_name = full_name;
         this.email = email;
     }
+
+    public User(String full_name, String phone_number, String address, String email) {
+
+    }
 }

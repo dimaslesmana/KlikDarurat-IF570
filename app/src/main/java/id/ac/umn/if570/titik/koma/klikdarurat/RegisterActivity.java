@@ -22,10 +22,11 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
     private Button btnRegister;
-    private TextView tvLoginAccount;
+    private TextView banner, tvLoginAccount;
     private FirebaseAuth mAuth;
-    private EditText editTextfull_name, editTextemail, editTextpassword;
+    private EditText editTextfull_name, editTextphone_number, editTextaddress, editTextemail, editTextpassword;
     private ProgressBar progressBar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,9 +38,12 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         btnRegister.setOnClickListener(this);
         tvLoginAccount.setOnClickListener(this);
         mAuth = FirebaseAuth.getInstance();
+        banner.setOnClickListener(this);
 
         editTextfull_name = (EditText) findViewById(R.id.full_name);
         editTextemail = (EditText) findViewById(R.id.email);
+        editTextphone_number = (EditText) findViewById(R.id.phone_number);
+        editTextaddress = (EditText) findViewById(R.id.address);
         editTextpassword = (EditText) findViewById(R.id.password);
 
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
@@ -55,19 +59,27 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         } else if (viewId == tvLoginAccount.getId()) {
             startActivity(new Intent(this, LoginActivity.class));
         }
-    }
-
-    private void initView() {
-        btnRegister = findViewById(R.id.button_register_register);
-        tvLoginAccount = findViewById(R.id.tv_register_login_account);
-
         String email= editTextemail.getText().toString().trim();
         String password= editTextpassword.getText().toString().trim();
         String full_name= editTextfull_name.getText().toString().trim();
+        String phone_number= editTextphone_number.getText().toString().trim();
+        String address= editTextaddress.getText().toString().trim();
 
         if (full_name.isEmpty()){
             editTextfull_name.setError("Full name is required!");
             editTextfull_name.requestFocus();
+            return;
+        }
+
+        if (phone_number.isEmpty()){
+            editTextphone_number.setError("Phone Number is required!");
+            editTextphone_number.requestFocus();
+            return;
+        }
+
+        if (address.isEmpty()){
+            editTextaddress.setError("Addres is required!");
+            editTextaddress.requestFocus();
             return;
         }
 
@@ -91,41 +103,46 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             editTextpassword.requestFocus();
             return;
         }
-
         progressBar.setVisibility(View.VISIBLE);
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            User user = new User(full_name, email);
+                            User user = new User(full_name, phone_number, address, email);
 
                             String path;
                             FirebaseDatabase.getInstance().getReference( "Users")
-                                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                    .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                                     .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
 
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
 
-                                            if (task.isSuccessful()) {
-                                                Toast.makeText(RegisterActivity.this, "User has been registered successfully!", Toast.LENGTH_LONG).show();
-                                                progressBar.setVisibility(View.GONE);
+                                    if (task.isSuccessful()) {
+                                        Toast.makeText(RegisterActivity.this, "User has been registered successfully!", Toast.LENGTH_LONG).show();
+                                        progressBar.setVisibility(View.GONE);
 
-                                                //redirect to login layout!
-                                            } else {
-                                                Toast.makeText(RegisterActivity.this, "Failed to register! Try again!", Toast.LENGTH_LONG).show();
-                                                progressBar.setVisibility(View.GONE);
+                                        //redirect to login layout!
+                                    } else {
+                                        Toast.makeText(RegisterActivity.this, "Failed to register! Try again!", Toast.LENGTH_LONG).show();
+                                        progressBar.setVisibility(View.GONE);
 
-                                            }
-                                        }
+                                    }
+                                }
 
-                                    });
-                                }else {
+                            });
+                        }else {
                             Toast.makeText(RegisterActivity.this, "Failed to register! Try again!", Toast.LENGTH_LONG).show();
                             progressBar.setVisibility(View.GONE);
                         }
                     }
                 });
+    }
+
+    private void initView() {
+        btnRegister = findViewById(R.id.button_register_register);
+        tvLoginAccount = findViewById(R.id.tv_register_login_account);
+
     }
 }

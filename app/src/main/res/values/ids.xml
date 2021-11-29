@@ -2,6 +2,8 @@
 <resources>
     <item name="tvLoginAccount" type="id" />
     <item name="full_name" type="id" />
+    <item name="phone_number" type="id"/>
+    <item name="address" type="id"/>
     <item name="email" type="id" />
     <item name="password" type="id" />
     <item name="progressBar" type="id" />

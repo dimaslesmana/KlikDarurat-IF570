@@ -60,13 +60,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         } else if (viewId == tvRegisterAccount.getId()) {
             startActivity(new Intent(this, RegisterActivity.class));
         }
-    }
-
-
-    private void initView() {
-        btnLogin = findViewById(R.id.button_login_login);
-        tvForgotPassword = findViewById(R.id.tv_login_forgot_password);
-        tvRegisterAccount = findViewById(R.id.tv_login_register_account);
         String email = editTextemail.getText().toString().trim();
         String password = editTextpassword.getText().toString().trim();
 
@@ -90,7 +83,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             editTextpassword.requestFocus();
             return;
         }
-        
+
         progressBar.setVisibility(View.VISIBLE);
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
@@ -111,6 +104,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 }
             }
         });
+    }
+
+
+    private void initView() {
+        btnLogin = findViewById(R.id.button_login_login);
+        tvForgotPassword = findViewById(R.id.tv_login_forgot_password);
+        tvRegisterAccount = findViewById(R.id.tv_login_register_account);
+
 
     }
 }
