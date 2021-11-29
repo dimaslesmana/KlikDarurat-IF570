@@ -53,6 +53,7 @@
     <!-- Button -->
     <string name="button_register">Daftar</string>
     <string name="button_login">Masuk</string>
+    <string name="button_logout">Keluar</string>
 
     <!-- Bottom Navigation -->
     <string name="nav_emergency_service">Layanan Darurat</string>

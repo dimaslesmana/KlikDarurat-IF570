@@ -9,45 +9,54 @@ import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
     private Button btnRegister;
-    private TextView banner, tvLoginAccount;
-    private FirebaseAuth mAuth;
-    private EditText editTextfull_name, editTextphone_number, editTextaddress, editTextemail, editTextpassword;
+    private TextView tvLoginAccount;
+    private TextInputLayout editTextfull_name, editTextphone_number, editTextaddress, editTextemail, editTextpassword;
     private ProgressBar progressBar;
-
+    private FirebaseAuth mAuth;
+    private FirebaseFirestore firestore;
+    private FirebaseUser currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
+        mAuth = FirebaseAuth.getInstance();
+        firestore = FirebaseFirestore.getInstance();
+        currentUser = mAuth.getCurrentUser();
+
+        if (currentUser != null) {
+            Log.d("AUTH", "CURRENT USER NOT NULL REGISTER");
+            startActivity(new Intent(this, MainActivity.class));
+            finish();
+        } else {
+            Log.d("AUTH", "CURRENT USER NULL REGISTER");
+        }
+
         initView();
 
         btnRegister.setOnClickListener(this);
         tvLoginAccount.setOnClickListener(this);
-        mAuth = FirebaseAuth.getInstance();
-        banner.setOnClickListener(this);
-
-        editTextfull_name = (EditText) findViewById(R.id.full_name);
-        editTextemail = (EditText) findViewById(R.id.email);
-        editTextphone_number = (EditText) findViewById(R.id.phone_number);
-        editTextaddress = (EditText) findViewById(R.id.address);
-        editTextpassword = (EditText) findViewById(R.id.password);
-
-        progressBar = (ProgressBar) findViewById(R.id.progressBar);
-
     }
 
     @Override
@@ -56,93 +65,108 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
         if (viewId == btnRegister.getId()) {
             Log.d("RegisterActivity", "Register button clicked");
+
+            String email= editTextemail.getEditText().getText().toString().trim();
+            String password= editTextpassword.getEditText().getText().toString().trim();
+            String full_name= editTextfull_name.getEditText().getText().toString().trim();
+            String phone_number= editTextphone_number.getEditText().getText().toString().trim();
+            String address= editTextaddress.getEditText().getText().toString().trim();
+
+            if (full_name.isEmpty()){
+                editTextfull_name.setError("Full name is required!");
+                editTextfull_name.requestFocus();
+                return;
+            }
+
+            if (phone_number.isEmpty()){
+                editTextphone_number.setError("Phone Number is required!");
+                editTextphone_number.requestFocus();
+                return;
+            }
+
+            if (address.isEmpty()){
+                editTextaddress.setError("Addres is required!");
+                editTextaddress.requestFocus();
+                return;
+            }
+
+            if (email.isEmpty()){
+                editTextemail.setError("Email is required!");
+                editTextemail.requestFocus();
+                return;
+            }
+            if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+                editTextemail.setError("Please provide valid email");
+                editTextemail.requestFocus();
+                return;
+            }
+            if (password.isEmpty()){
+                editTextpassword.setError("Password is required!");
+                editTextpassword.requestFocus();
+                return;
+            }
+            if (password.length() <6){
+                editTextpassword.setError("Min Password 6 Karakter!");
+                editTextpassword.requestFocus();
+                return;
+            }
+            progressBar.setVisibility(View.VISIBLE);
+            mAuth.createUserWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                currentUser = mAuth.getCurrentUser();
+                                String userId = currentUser.getUid();
+                                DocumentReference documentReference = firestore.collection("users").document(userId);
+
+                                Map<String, Object> user = new HashMap<>();
+                                user.put("fullName", full_name);
+                                user.put("email", email);
+                                user.put("phoneNumber", phone_number);
+                                user.put("address", address) ;
+
+                                documentReference.set(user)
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void unused) {
+                                                progressBar.setVisibility(View.GONE);
+                                                currentUser.sendEmailVerification();
+                                                mAuth.signOut();
+
+                                                // redirect to login layout!
+                                                Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                                                intent.putExtra("REGISTRATION_SUCCESS", "Registration success. Check Your email to verify your account!");
+                                                startActivity(intent);
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                progressBar.setVisibility(View.GONE);
+                                                Toast.makeText(RegisterActivity.this, "Failed to register! Try again!", Toast.LENGTH_LONG).show();
+                                            }
+                                        });
+                            } else {
+                                Toast.makeText(RegisterActivity.this, "Failed to register! Try again!", Toast.LENGTH_LONG).show();
+                                progressBar.setVisibility(View.GONE);
+                            }
+                        }
+                    });
         } else if (viewId == tvLoginAccount.getId()) {
             startActivity(new Intent(this, LoginActivity.class));
         }
-        String email= editTextemail.getText().toString().trim();
-        String password= editTextpassword.getText().toString().trim();
-        String full_name= editTextfull_name.getText().toString().trim();
-        String phone_number= editTextphone_number.getText().toString().trim();
-        String address= editTextaddress.getText().toString().trim();
-
-        if (full_name.isEmpty()){
-            editTextfull_name.setError("Full name is required!");
-            editTextfull_name.requestFocus();
-            return;
-        }
-
-        if (phone_number.isEmpty()){
-            editTextphone_number.setError("Phone Number is required!");
-            editTextphone_number.requestFocus();
-            return;
-        }
-
-        if (address.isEmpty()){
-            editTextaddress.setError("Addres is required!");
-            editTextaddress.requestFocus();
-            return;
-        }
-
-        if (email.isEmpty()){
-            editTextemail.setError("Email is required!");
-            editTextemail.requestFocus();
-            return;
-        }
-        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-            editTextemail.setError("Please provide valid email");
-            editTextemail.requestFocus();
-            return;
-        }
-        if (password.isEmpty()){
-            editTextpassword.setError("Password is required!");
-            editTextpassword.requestFocus();
-            return;
-        }
-        if (password.length() <6){
-            editTextpassword.setError("Min Password 6 Karakter!");
-            editTextpassword.requestFocus();
-            return;
-        }
-        progressBar.setVisibility(View.VISIBLE);
-        mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            User user = new User(full_name, phone_number, address, email);
-
-                            String path;
-                            FirebaseDatabase.getInstance().getReference( "Users")
-                                    .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                    .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
-
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-
-                                    if (task.isSuccessful()) {
-                                        Toast.makeText(RegisterActivity.this, "User has been registered successfully!", Toast.LENGTH_LONG).show();
-                                        progressBar.setVisibility(View.GONE);
-
-                                        //redirect to login layout!
-                                    } else {
-                                        Toast.makeText(RegisterActivity.this, "Failed to register! Try again!", Toast.LENGTH_LONG).show();
-                                        progressBar.setVisibility(View.GONE);
-
-                                    }
-                                }
-
-                            });
-                        }else {
-                            Toast.makeText(RegisterActivity.this, "Failed to register! Try again!", Toast.LENGTH_LONG).show();
-                            progressBar.setVisibility(View.GONE);
-                        }
-                    }
-                });
     }
 
     private void initView() {
         btnRegister = findViewById(R.id.button_register_register);
         tvLoginAccount = findViewById(R.id.tv_register_login_account);
 
+        editTextfull_name = findViewById(R.id.textInputLayout_register_full_name);
+        editTextemail = findViewById(R.id.textInputLayout_register_email);
+        editTextphone_number = findViewById(R.id.textInputLayout_phone_number);
+        editTextaddress = findViewById(R.id.textInputLayout_address);
+        editTextpassword = findViewById(R.id.textInputLayout_register_password);
+        progressBar = findViewById(R.id.progressBar);
     }
 }

@@ -26,9 +26,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.KlikDarurat" >
-        <activity
-            android:name=".ForgotPassword"
-            android:exported="true" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -42,11 +39,15 @@
             android:value="${MAPS_API_KEY}" />
 
         <activity
+            android:name=".MainActivity"
+            android:exported="false"
+            android:theme="@style/Theme.KlikDarurat.NoActionBar" />
+        <activity
             android:name=".MapsActivity"
             android:exported="false"
             android:label="@string/title_activity_maps"
             android:theme="@style/Theme.KlikDarurat.NoActionBar" />
-      <!--  <activity
+    <!--  <activity
             android:name=".RegisterActivity"
             android:exported="false"
             android:theme="@style/Theme.KlikDarurat.NoActionBar" /> -->
