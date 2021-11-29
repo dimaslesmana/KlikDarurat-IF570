@@ -5,4 +5,5 @@
     <item name="email" type="id" />
     <item name="password" type="id" />
     <item name="progressBar" type="id" />
+    <item name="resetPassword" type="id" />
 </resources>

@@ -34,6 +34,8 @@
     <string name="register_tv_title">Daftar Akun Baru</string>
     <string name="register_tv_login_account">Masuk</string>
 
+    <!-- ForgotPassword -->
+
     <!-- Label -->
     <string name="label_full_name">Nama Lengkap</string>
     <string name="label_phone_number">Nomor Telepon</string>
