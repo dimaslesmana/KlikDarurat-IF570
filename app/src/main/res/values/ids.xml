@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="tvLoginAccount" type="id" />
+    <item name="full_name" type="id" />
+    <item name="email" type="id" />
+    <item name="password" type="id" />
+    <item name="progressBar" type="id" />
+</resources>
