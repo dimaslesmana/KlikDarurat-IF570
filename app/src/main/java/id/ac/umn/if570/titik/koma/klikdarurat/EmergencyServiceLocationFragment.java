@@ -5,16 +5,23 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.libraries.places.compat.Place;
+import com.google.android.libraries.places.compat.ui.PlaceAutocompleteFragment;
+import com.google.android.libraries.places.compat.ui.PlaceSelectionListener;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,6 +30,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
  */
 public class EmergencyServiceLocationFragment extends Fragment implements OnMapReadyCallback {
     private GoogleMap googleMap;
+    private LatLng location = new LatLng(-8.579892, 116.095239);
+    private static final int PROXIMITY_RADIUS_METERS = 15000;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -71,6 +80,7 @@ public class EmergencyServiceLocationFragment extends Fragment implements OnMapR
         SupportMapFragment mapFragment = SupportMapFragment.newInstance();
         getChildFragmentManager().beginTransaction().replace(R.id.fragment_emergency_service_location_map, mapFragment).commit();
         mapFragment.getMapAsync(this);
+        setupAutoCompleteFragment();
 
         return view;
     }
@@ -78,9 +88,54 @@ public class EmergencyServiceLocationFragment extends Fragment implements OnMapR
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         this.googleMap = googleMap;
+        this.googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 8.5f));
+        this.googleMap.addMarker(new MarkerOptions()
+                .position(location)
+                .title("Klik Darurat")
+                .snippet("lokasi saya")
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+    }
 
-        LatLng coordinate = new LatLng(-6.257324602410285, 106.61834152594922);
-        this.googleMap.addMarker(new MarkerOptions().position(coordinate).title("Test"));
-        this.googleMap.moveCamera(CameraUpdateFactory.newLatLng(coordinate));
+    private void setupAutoCompleteFragment() {
+        PlaceAutocompleteFragment placeAutocompleteFragment = (PlaceAutocompleteFragment)  getActivity().getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+
+        placeAutocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(Place place) {
+                location = place.getLatLng();
+
+                String url = getUrl(location.latitude, location.longitude, "");
+                Object[] DataTransfer = new Object[2];
+                DataTransfer[0] = googleMap;
+                DataTransfer[1] = url;
+                Log.d("onClick", url);
+                GetNearbyPlacesData getNearbyPlacesData = new GetNearbyPlacesData();
+                getNearbyPlacesData.execute(DataTransfer);
+            }
+
+            @Override
+            public void onError(Status status) {
+                Log.e("Error", status.getStatusMessage());
+            }
+        });
+    }
+
+    private String getUrl(double latitude, double longitude, String nearbyPlace) {
+        StringBuilder googlePlacesUrl = new StringBuilder(getString(R.string.nearby_url_api));
+        googlePlacesUrl.append("location=" + latitude + "," + longitude);
+        googlePlacesUrl.append("&radius=" + PROXIMITY_RADIUS_METERS);
+        googlePlacesUrl.append("&type=" + nearbyPlace);
+        googlePlacesUrl.append("&sensor=true");
+        googlePlacesUrl.append("&key=" + getString(R.string.google_maps_key));
+        Log.d("getUrl", googlePlacesUrl.toString());
+        return (googlePlacesUrl.toString());
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (googleMap != null) {
+            googleMap.clear();
+        }
     }
 }

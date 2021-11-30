@@ -46,17 +46,6 @@
             android:exported="false"
             android:theme="@style/Theme.KlikDarurat.NoActionBar" />
         <activity
-            android:name=".MapsActivity"
-            android:exported="false"
-            android:label="@string/title_activity_maps"
-            android:theme="@style/Theme.KlikDarurat.NoActionBar" />
-        <!--
-  <activity
-            android:name=".RegisterActivity"
-            android:exported="false"
-            android:theme="@style/Theme.KlikDarurat.NoActionBar" />
-        -->
-        <activity
             android:name=".LoginActivity"
             android:exported="false"
             android:theme="@style/Theme.KlikDarurat.NoActionBar" />
