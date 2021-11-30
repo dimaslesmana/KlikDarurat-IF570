@@ -99,15 +99,6 @@ public class UserProfileFragment extends Fragment {
         userID = fAuth.getCurrentUser().getUid();
 
         DocumentReference documentReference = fStore.collection("users").document(userID);
-//        documentReference.addSnapshotListener(getActivity(), new EventListener<DocumentSnapshot>() {
-//            @Override
-//            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
-//                fullName.setText(documentSnapshot.getString("fullName"));
-//                phoneNumber.setText(documentSnapshot.getString("phoneNumber"));
-//                email.setText(documentSnapshot.getString("email"));
-//                address.setText(documentSnapshot.getString("address"));
-//            }
-//        });
         documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
@@ -122,7 +113,12 @@ public class UserProfileFragment extends Fragment {
         btnLogout = view.findViewById(R.id.btn_profile_logout);
 
         linearlayoutEdit.setOnClickListener(v -> {
-            startActivity(new Intent(getActivity(), EditUserProfileActivity.class));
+            Intent intent = new Intent(v.getContext(), EditUserProfileActivity.class);
+            intent.putExtra("fullName", fullName.getText().toString());
+            intent.putExtra("phoneNumber", phoneNumber.getText().toString());
+            intent.putExtra("email", email.getText().toString());
+            intent.putExtra("address", address.getText().toString());
+            startActivity(intent);
         });
 
         btnLogout.setOnClickListener(view1 -> {
