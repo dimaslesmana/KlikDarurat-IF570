@@ -1,5 +1,7 @@
 package id.ac.umn.if570.titik.koma.klikdarurat;
 
+import android.util.Log;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -9,87 +11,72 @@ import java.util.HashMap;
 import java.util.List;
 
 public class DataParser {
-    private HashMap<String, String> getSingleNearbyPlace(JSONObject googlePlaceJSON)
-    {
-        HashMap<String, String> googlePlaceMap = new HashMap<>();
-        String NameOfPlace = "-NA-";
+
+    private HashMap<String, String> getPlace(JSONObject googlePlaceJson) {
+        HashMap<String, String> googlePlaceMap = new HashMap<String, String>();
+        String placeName = "-NA-";
         String vicinity = "-NA-";
         String latitude = "";
         String longitude = "";
         String reference = "";
 
-        try
-        {
-            if (!googlePlaceJSON.isNull("name"))
-            {
-                NameOfPlace = googlePlaceJSON.getString("name");
-            }
-            if (!googlePlaceJSON.isNull("vicinity"))
-            {
-                vicinity = googlePlaceJSON.getString("vicinity");
-            }
-            latitude = googlePlaceJSON.getJSONObject("geometry").getJSONObject("location").getString("lat");
-            longitude = googlePlaceJSON.getJSONObject("geometry").getJSONObject("location").getString("lng");
-            reference = googlePlaceJSON.getString("reference");
+        Log.d("getPlace", "Entered");
 
-            googlePlaceMap.put("place_name", NameOfPlace);
+        try {
+            if (!googlePlaceJson.isNull("name")) {
+                placeName = googlePlaceJson.getString("name");
+            }
+            if (!googlePlaceJson.isNull("vicinity")) {
+                vicinity = googlePlaceJson.getString("vicinity");
+            }
+            latitude = googlePlaceJson.getJSONObject("geometry").getJSONObject("location").getString("lat");
+            longitude = googlePlaceJson.getJSONObject("geometry").getJSONObject("location").getString("lng");
+            reference = googlePlaceJson.getString("reference");
+            googlePlaceMap.put("place_name", placeName);
             googlePlaceMap.put("vicinity", vicinity);
             googlePlaceMap.put("lat", latitude);
             googlePlaceMap.put("lng", longitude);
             googlePlaceMap.put("reference", reference);
-        }
-        catch (JSONException e)
-        {
+            Log.d("getPlace", "Putting Places");
+        } catch (JSONException e) {
+            Log.d("getPlace", "Error");
             e.printStackTrace();
         }
-
         return googlePlaceMap;
     }
 
+    private List<HashMap<String, String>> getPlaces(JSONArray jsonArray) {
+        int placesCount = jsonArray.length();
+        List<HashMap<String, String>> placesList = new ArrayList<>();
+        HashMap<String, String> placeMap = null;
+        Log.d("Places", "getPlaces");
 
+        for (int i = 0; i < placesCount; i++) {
+            try {
+                placeMap = getPlace((JSONObject) jsonArray.get(i));
+                placesList.add(placeMap);
+                Log.d("Places", "Adding places");
 
-    private List<HashMap<String, String>> getAllNearbyPlaces(JSONArray jsonArray)
-    {
-        int counter = jsonArray.length();
-
-        List<HashMap<String, String>> NearbyPlacesList = new ArrayList<>();
-
-        HashMap<String, String> NearbyPlaceMap = null;
-
-        for (int i=0; i<counter; i++)
-        {
-            try
-            {
-                NearbyPlaceMap = getSingleNearbyPlace( (JSONObject) jsonArray.get(i) );
-                NearbyPlacesList.add(NearbyPlaceMap);
-
-            }
-            catch (JSONException e)
-            {
+            } catch (JSONException e) {
+                Log.d("Places", "Error in Adding places");
                 e.printStackTrace();
             }
         }
-
-        return NearbyPlacesList;
+        return placesList;
     }
 
-
-
-    public List<HashMap<String, String>> parse(String jSONdata)
-    {
+    public List<HashMap<String, String>> parse(String jsonData) {
         JSONArray jsonArray = null;
         JSONObject jsonObject;
 
-        try
-        {
-            jsonObject = new JSONObject(jSONdata);
+        try {
+            Log.d("Places", "parse");
+            jsonObject = new JSONObject(jsonData);
             jsonArray = jsonObject.getJSONArray("results");
-        }
-        catch (JSONException e)
-        {
+        } catch (JSONException e) {
+            Log.d("Places", "parse error");
             e.printStackTrace();
         }
-
-        return getAllNearbyPlaces(jsonArray);
+        return getPlaces(jsonArray);
     }
 }
