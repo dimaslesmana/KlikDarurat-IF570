@@ -20,6 +20,12 @@
     <string name="personal_emergency_contact_tv_a_z">A - Z</string>
     <string name="personal_emergency_contact_tv_sort">Sort</string>
 
+    <!-- Add Personal Emergency Contact -->
+    <string name="add_personal_emergency_contact_tv_title">Tambah Kontak</string>
+
+    <!-- Add Personal Emergency Contact -->
+    <string name="edit_personal_emergency_contact_tv_title">Edit Kontak</string>
+
     <!-- User Profile -->
     <string name="user_profile_tv_title">Profil Saya</string>
 

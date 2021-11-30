@@ -23,14 +23,6 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 
-//import com.google.firebase.auth.FirebaseAuth;
-//import com.google.firebase.auth.FirebaseUser;
-//import com.google.firebase.database.DataSnapshot;
-//import com.google.firebase.database.DatabaseError;
-//import com.google.firebase.database.DatabaseReference;
-//import com.google.firebase.database.FirebaseDatabase;
-//import com.google.firebase.database.ValueEventListener;
-
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link UserProfileFragment#newInstance} factory method to
@@ -41,6 +33,7 @@ public class UserProfileFragment extends Fragment {
     private String userID;
     private FirebaseAuth fAuth;
     private FirebaseFirestore fStore;
+    private FirebaseUser currentUser;
     private LinearLayout linearlayoutEdit;
     private Button btnLogout;
 
@@ -82,6 +75,16 @@ public class UserProfileFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+        fStore = FirebaseFirestore.getInstance();
+        fAuth = FirebaseAuth.getInstance();
+        currentUser = fAuth.getCurrentUser();
+
+        if (currentUser == null) {
+            startActivity(new Intent(getActivity(), LoginActivity.class));
+            //getActivity().getSupportFragmentManager().popBackStack();
+            //getActivity().onBackPressed();
+        }
     }
 
     @Override
@@ -93,10 +96,7 @@ public class UserProfileFragment extends Fragment {
         email = view.findViewById(R.id.tv_profile_email);
         address = view.findViewById(R.id.tv_profile_address);
 
-        fAuth = FirebaseAuth.getInstance();
-        fStore = FirebaseFirestore.getInstance();
-
-        userID = fAuth.getCurrentUser().getUid();
+        userID = currentUser.getUid();
 
         DocumentReference documentReference = fStore.collection("users").document(userID);
         documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
@@ -113,7 +113,7 @@ public class UserProfileFragment extends Fragment {
         btnLogout = view.findViewById(R.id.btn_profile_logout);
 
         linearlayoutEdit.setOnClickListener(v -> {
-            Intent intent = new Intent(v.getContext(), EditUserProfileActivity.class);
+            Intent intent = new Intent(view.getContext(), EditUserProfileActivity.class);
             intent.putExtra("fullName", fullName.getText().toString());
             intent.putExtra("phoneNumber", phoneNumber.getText().toString());
             intent.putExtra("email", email.getText().toString());
@@ -121,9 +121,9 @@ public class UserProfileFragment extends Fragment {
             startActivity(intent);
         });
 
-        btnLogout.setOnClickListener(view1 -> {
+        btnLogout.setOnClickListener(v -> {
             FirebaseAuth.getInstance().signOut();
-            startActivity(new Intent(getActivity(), LoginActivity.class));
+            startActivity(new Intent(view.getContext(), LoginActivity.class));
         });
 
         return view;

@@ -46,11 +46,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         currentUser = mAuth.getCurrentUser();
 
         if (currentUser != null) {
-            Log.d("AUTH", "CURRENT USER NOT NULL REGISTER");
             startActivity(new Intent(this, MainActivity.class));
             finish();
-        } else {
-            Log.d("AUTH", "CURRENT USER NULL REGISTER");
         }
 
         initView();
@@ -124,7 +121,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                                 user.put("fullName", full_name);
                                 user.put("email", email);
                                 user.put("phoneNumber", phone_number);
-                                user.put("address", address) ;
+                                user.put("address", address);
 
                                 documentReference.set(user)
                                         .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -147,6 +144,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                                                 Toast.makeText(RegisterActivity.this, "Failed to register! Try again!", Toast.LENGTH_LONG).show();
                                             }
                                         });
+
+                                //createContactsCollection(userId);
                             } else {
                                 Toast.makeText(RegisterActivity.this, "Failed to register! Try again!", Toast.LENGTH_LONG).show();
                                 progressBar.setVisibility(View.GONE);
@@ -164,9 +163,21 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
         editTextfull_name = findViewById(R.id.textInputLayout_register_full_name);
         editTextemail = findViewById(R.id.textInputLayout_register_email);
-        editTextphone_number = findViewById(R.id.textInputLayout_phone_number);
-        editTextaddress = findViewById(R.id.textInputLayout_address);
+        editTextphone_number = findViewById(R.id.textInputLayout_register_phone_number);
+        editTextaddress = findViewById(R.id.textInputLayout_register_address);
         editTextpassword = findViewById(R.id.textInputLayout_register_password);
         progressBar = findViewById(R.id.progressBar);
+    }
+
+    private void createContactsCollection(String userId) {
+        DocumentReference documentReference = firestore.collection("contacts").document(userId);
+
+        Map<String, Object> contact = new HashMap<>();
+//        Map<String, Object> map = new HashMap<>();
+//        map.put("phoneNumber", "123");
+//
+//        contact.put("keluarga", new HashMap<>());
+
+        documentReference.set(contact);
     }
 }

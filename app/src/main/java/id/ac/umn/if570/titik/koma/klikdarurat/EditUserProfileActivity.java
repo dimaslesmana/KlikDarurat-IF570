@@ -103,6 +103,8 @@ public class EditUserProfileActivity extends AppCompatActivity {
                                 finish();
                             }
                         });
+
+                        // Toast
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override

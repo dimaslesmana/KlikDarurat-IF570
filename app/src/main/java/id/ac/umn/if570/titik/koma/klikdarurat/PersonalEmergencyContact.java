@@ -1,8 +1,19 @@
 package id.ac.umn.if570.titik.koma.klikdarurat;
 
-public class PersonalEmergencyContact {
+import java.io.Serializable;
+
+public class PersonalEmergencyContact implements Serializable {
+    private String id;
     private String name;
     private String phoneNumber;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;

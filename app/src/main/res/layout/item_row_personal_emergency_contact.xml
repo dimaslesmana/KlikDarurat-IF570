@@ -12,6 +12,8 @@
         android:layout_height="wrap_content"
         android:padding="18dp"
         tools:text="Full Name"
+        tools:textStyle="bold"
+        android:textStyle="bold"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent" />
 
