@@ -128,6 +128,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                                             @Override
                                             public void onSuccess(Void unused) {
                                                 progressBar.setVisibility(View.GONE);
+                                                createContactsCollection(userId);
                                                 currentUser.sendEmailVerification();
                                                 mAuth.signOut();
 
@@ -144,8 +145,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                                                 Toast.makeText(RegisterActivity.this, "Failed to register! Try again!", Toast.LENGTH_LONG).show();
                                             }
                                         });
-
-                                //createContactsCollection(userId);
                             } else {
                                 Toast.makeText(RegisterActivity.this, "Failed to register! Try again!", Toast.LENGTH_LONG).show();
                                 progressBar.setVisibility(View.GONE);
@@ -170,14 +169,11 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     }
 
     private void createContactsCollection(String userId) {
-        DocumentReference documentReference = firestore.collection("contacts").document(userId);
+        DocumentReference documentReference = firestore.collection("users").document(userId);
 
         Map<String, Object> contact = new HashMap<>();
-//        Map<String, Object> map = new HashMap<>();
-//        map.put("phoneNumber", "123");
-//
-//        contact.put("keluarga", new HashMap<>());
+        contact.put("name", "EMPTY_RESERVED");
 
-        documentReference.set(contact);
+        documentReference.collection("contacts").document("EMPTY_RESERVED").set(contact);
     }
 }

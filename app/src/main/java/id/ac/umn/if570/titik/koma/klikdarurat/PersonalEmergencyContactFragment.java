@@ -109,7 +109,7 @@ public class PersonalEmergencyContactFragment extends Fragment implements View.O
 
         DocumentReference docRef = firestore.collection("users").document(currentUser.getUid());
 
-        docRef.collection("contacts").orderBy("name", Query.Direction.ASCENDING).addSnapshotListener(new EventListener<QuerySnapshot>() {
+        docRef.collection("contacts").orderBy("name", Query.Direction.ASCENDING).whereNotEqualTo("name", "EMPTY_RESERVED").addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
                 if (error != null) {
@@ -122,7 +122,9 @@ public class PersonalEmergencyContactFragment extends Fragment implements View.O
                 }
 
                 if (value.isEmpty()) {
-                    Log.i("CONTACTS", "CONTACTS IS EMPTY!");
+                    if (progressDialog.isShowing()) {
+                        progressDialog.dismiss();
+                    }
                     return;
                 }
 
@@ -156,7 +158,7 @@ public class PersonalEmergencyContactFragment extends Fragment implements View.O
         adapter = new PersonalEmergencyContactAdapter(view.getContext(), personalEmergencyContacts);
         rvPersonalEmergencyContact.setAdapter(adapter);
 
-       registerForContextMenu(rvPersonalEmergencyContact);
+        registerForContextMenu(rvPersonalEmergencyContact);
         adapter.setOnItemClickCallback(new PersonalEmergencyContactAdapter.OnItemClickCallback() {
             @Override
             public void OnItemClicked(PersonalEmergencyContact contact) {
@@ -179,6 +181,7 @@ public class PersonalEmergencyContactFragment extends Fragment implements View.O
     @Override
     public void onCreateContextMenu(@NonNull ContextMenu menu, @NonNull View v, @Nullable ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
+
         MenuInflater inflater = getActivity().getMenuInflater();
         inflater.inflate(R.menu.menu_context_menu_personal_emergency_contact, menu);
     }

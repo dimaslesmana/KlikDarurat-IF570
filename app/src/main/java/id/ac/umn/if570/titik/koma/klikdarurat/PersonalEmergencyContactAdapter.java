@@ -19,6 +19,9 @@ public class PersonalEmergencyContactAdapter extends RecyclerView.Adapter<Person
     private ArrayList<PersonalEmergencyContact> personalEmergencyContacts;
     private OnItemClickCallback onItemClickCallback;
     private OnLongItemClickCallback onLongItemClickCallback;
+    private static final int VIEW_TYPE_EMPTY = 0;
+    private static final int VIEW_TYPE_CONTACT = 1;
+
     public interface OnItemClickCallback {
         void OnItemClicked(PersonalEmergencyContact contact);
     }
@@ -43,33 +46,57 @@ public class PersonalEmergencyContactAdapter extends RecyclerView.Adapter<Person
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_row_personal_emergency_contact, parent, false);
+        View view;
+
+        if (viewType == VIEW_TYPE_CONTACT) {
+            view = LayoutInflater.from(context).inflate(R.layout.item_row_personal_emergency_contact, parent, false);
+        } else {
+            view = LayoutInflater.from(context).inflate(R.layout.item_row_personal_emergency_contact_empty, parent, false);
+        }
+
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        PersonalEmergencyContact contact = personalEmergencyContacts.get(position);
+        int viewType = getItemViewType(position);
 
-        holder.tvName.setText(contact.getName());
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onItemClickCallback.OnItemClicked(contact);
-            }
-        });
-        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                onLongItemClickCallback.OnLongItemClicked(contact);
-                return false;
-            }
-        });
+        if (viewType == VIEW_TYPE_CONTACT) {
+            PersonalEmergencyContact contact = personalEmergencyContacts.get(position);
+
+            holder.tvName.setText(contact.getName());
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onItemClickCallback.OnItemClicked(contact);
+                }
+            });
+            holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    onLongItemClickCallback.OnLongItemClicked(contact);
+                    return false;
+                }
+            });
+        }
     }
 
     @Override
     public int getItemCount() {
-        return personalEmergencyContacts.size();
+        if (personalEmergencyContacts.size() == 0) {
+            return 1;
+        } else {
+            return personalEmergencyContacts.size();
+        }
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if (personalEmergencyContacts.size() == 0) {
+            return VIEW_TYPE_EMPTY;
+        } else {
+            return VIEW_TYPE_CONTACT;
+        }
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
