@@ -95,6 +95,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                         if (currentUser.isEmailVerified()) {
                             startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                            finish();
                         } else {
                             Toast.makeText(LoginActivity.this, "Please verify your email first!", Toast.LENGTH_LONG).show();
                         }
@@ -108,6 +109,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             Log.d("LoginActivity", "Forgot Password clicked");
         } else if (viewId == tvRegisterAccount.getId()) {
             startActivity(new Intent(this, RegisterActivity.class));
+            finish();
         }
 
     }

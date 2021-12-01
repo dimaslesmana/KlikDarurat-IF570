@@ -136,6 +136,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                                                 Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
                                                 intent.putExtra("REGISTRATION_SUCCESS", "Registration success. Check Your email to verify your account!");
                                                 startActivity(intent);
+                                                finish();
                                             }
                                         })
                                         .addOnFailureListener(new OnFailureListener() {
@@ -153,6 +154,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                     });
         } else if (viewId == tvLoginAccount.getId()) {
             startActivity(new Intent(this, LoginActivity.class));
+            finish();
         }
     }
 

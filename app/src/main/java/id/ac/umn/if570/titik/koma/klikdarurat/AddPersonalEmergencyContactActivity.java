@@ -122,6 +122,7 @@ public class AddPersonalEmergencyContactActivity extends AppCompatActivity {
 
                         Intent intent = new Intent(AddPersonalEmergencyContactActivity.this, MainActivity.class);
                         startActivity(intent);
+                        finish();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
