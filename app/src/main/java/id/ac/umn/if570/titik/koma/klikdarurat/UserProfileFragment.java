@@ -82,8 +82,6 @@ public class UserProfileFragment extends Fragment {
 
         if (currentUser == null) {
             startActivity(new Intent(getActivity(), LoginActivity.class));
-            //getActivity().getSupportFragmentManager().popBackStack();
-            //getActivity().onBackPressed();
         }
     }
 

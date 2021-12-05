@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/nav_menu_emergency_service">
+
+    <fragment
+        android:id="@+id/nav_menu_emergency_service"
+        android:name="id.ac.umn.if570.titik.koma.klikdarurat.EmergencyServiceFragment"
+        android:label="fragment_emergency_service"
+        tools:layout="@layout/fragment_emergency_service" />
+
+    <fragment
+        android:id="@+id/nav_menu_personal_emergency_contact"
+        android:name="id.ac.umn.if570.titik.koma.klikdarurat.PersonalEmergencyContactFragment"
+        android:label="fragment_personal_emergency_contact"
+        tools:layout="@layout/fragment_personal_emergency_contact" />
+
+    <fragment
+        android:id="@+id/nav_menu_user_profile"
+        android:name="id.ac.umn.if570.titik.koma.klikdarurat.UserProfileFragment"
+        android:label="fragment_user_profile"
+        tools:layout="@layout/fragment_user_profile" />
+
+    <fragment
+        android:id="@+id/nav_menu_emergency_service_location"
+        android:name="id.ac.umn.if570.titik.koma.klikdarurat.EmergencyServiceLocationFragment"
+        android:label="fragment_emergency_service_location"
+        tools:layout="@layout/fragment_emergency_service_location" />
+</navigation>

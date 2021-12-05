@@ -98,8 +98,6 @@ public class PersonalEmergencyContactFragment extends Fragment implements View.O
 
         if (currentUser == null) {
             startActivity(new Intent(getActivity(), LoginActivity.class));
-            //getActivity().getSupportFragmentManager().popBackStack();
-            //getActivity().onBackPressed();
         }
 
         progressDialog = new ProgressDialog(getContext());

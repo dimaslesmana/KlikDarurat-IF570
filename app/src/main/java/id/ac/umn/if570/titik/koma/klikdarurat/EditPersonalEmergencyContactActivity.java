@@ -122,8 +122,7 @@ public class EditPersonalEmergencyContactActivity extends AppCompatActivity {
                             progressDialog.dismiss();
                         }
 
-                        Intent intent = new Intent(EditPersonalEmergencyContactActivity.this, MainActivity.class);
-                        startActivity(intent);
+                        MainActivity.navController.navigate(R.id.nav_menu_personal_emergency_contact);
                         finish();
                     }
                 })

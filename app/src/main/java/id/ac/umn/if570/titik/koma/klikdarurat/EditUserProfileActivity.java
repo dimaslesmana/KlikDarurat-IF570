@@ -11,6 +11,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.navigation.Navigation;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -99,7 +100,7 @@ public class EditUserProfileActivity extends AppCompatActivity {
                             @Override
                             public void onSuccess(Void unused) {
                                 Toast.makeText(EditUserProfileActivity.this, "Profile updated", Toast.LENGTH_SHORT).show();
-                                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                                MainActivity.navController.navigate(R.id.nav_menu_user_profile);
                                 finish();
                             }
                         });

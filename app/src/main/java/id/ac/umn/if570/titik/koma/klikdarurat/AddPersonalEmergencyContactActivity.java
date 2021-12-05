@@ -120,8 +120,7 @@ public class AddPersonalEmergencyContactActivity extends AppCompatActivity {
 
                         documentReference.update(contact);
 
-                        Intent intent = new Intent(AddPersonalEmergencyContactActivity.this, MainActivity.class);
-                        startActivity(intent);
+                        MainActivity.navController.navigate(R.id.nav_menu_personal_emergency_contact);
                         finish();
                     }
                 })
