@@ -13,15 +13,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.ListenerRegistration;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -29,13 +25,14 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
  * create an instance of this fragment.
  */
 public class UserProfileFragment extends Fragment {
-    private TextView fullName, phoneNumber, email, address;
-    private String userID;
-    private FirebaseAuth fAuth;
-    private FirebaseFirestore fStore;
-    private FirebaseUser currentUser;
     private LinearLayout linearlayoutEdit;
+    private TextView tvFullName;
+    private TextView tvPhoneNumber;
+    private TextView tvEmail;
+    private TextView tvAddress;
     private Button btnLogout;
+    private String userID;
+    private ListenerRegistration userDocumentListenerRegistration;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -76,12 +73,9 @@ public class UserProfileFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
-        fStore = FirebaseFirestore.getInstance();
-        fAuth = FirebaseAuth.getInstance();
-        currentUser = fAuth.getCurrentUser();
-
-        if (currentUser == null) {
-            startActivity(new Intent(getActivity(), LoginActivity.class));
+        if (!FirebaseHelper.instance.isAuthenticated()) {
+            startActivity(new Intent(getContext(), LoginActivity.class));
+            return;
         }
     }
 
@@ -89,40 +83,46 @@ public class UserProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_user_profile, container, false);
 
-        fullName = view.findViewById(R.id.tv_profile_full_name);
-        phoneNumber = view.findViewById(R.id.tv_profile_phone_number);
-        email = view.findViewById(R.id.tv_profile_email);
-        address = view.findViewById(R.id.tv_profile_address);
-
-        userID = currentUser.getUid();
-
-        DocumentReference documentReference = fStore.collection("users").document(userID);
-        documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
-            @Override
-            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
-                fullName.setText(documentSnapshot.getString("fullName"));
-                phoneNumber.setText(documentSnapshot.getString("phoneNumber"));
-                email.setText(documentSnapshot.getString("email"));
-                address.setText(documentSnapshot.getString("address"));
-            }
-        });
-
         linearlayoutEdit = view.findViewById(R.id.linearlayout_profile_edit);
+        tvFullName = view.findViewById(R.id.tv_profile_full_name);
+        tvPhoneNumber = view.findViewById(R.id.tv_profile_phone_number);
+        tvEmail = view.findViewById(R.id.tv_profile_email);
+        tvAddress = view.findViewById(R.id.tv_profile_address);
         btnLogout = view.findViewById(R.id.btn_profile_logout);
 
         linearlayoutEdit.setOnClickListener(v -> {
-            Intent intent = new Intent(view.getContext(), EditUserProfileActivity.class);
-            intent.putExtra("fullName", fullName.getText().toString());
-            intent.putExtra("phoneNumber", phoneNumber.getText().toString());
-            intent.putExtra("email", email.getText().toString());
-            intent.putExtra("address", address.getText().toString());
+            Intent intent = new Intent(getContext(), EditUserProfileActivity.class);
+            intent.putExtra("fullName", tvFullName.getText().toString());
+            intent.putExtra("phoneNumber", tvPhoneNumber.getText().toString());
+            intent.putExtra("email", tvEmail.getText().toString());
+            intent.putExtra("address", tvAddress.getText().toString());
             startActivity(intent);
         });
 
         btnLogout.setOnClickListener(v -> {
-            FirebaseAuth.getInstance().signOut();
-            startActivity(new Intent(view.getContext(), LoginActivity.class));
+            if (userDocumentListenerRegistration != null) {
+                userDocumentListenerRegistration.remove();
+            }
+
+            FirebaseHelper.instance.logoutUser();
+            startActivity(new Intent(getContext(), MainActivity.class));
         });
+
+        userID = FirebaseHelper.instance.getCurrentUser().getUid();
+
+        if (userDocumentListenerRegistration == null) {
+            userDocumentListenerRegistration = FirebaseHelper.instance.getUserDocument(userID).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                @Override
+                public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                    if (value != null && value.exists()) {
+                        tvFullName.setText(value.getString("fullName"));
+                        tvPhoneNumber.setText(value.getString("phoneNumber"));
+                        tvEmail.setText(value.getString("email"));
+                        tvAddress.setText(value.getString("address"));
+                    }
+                }
+            });
+        }
 
         return view;
     }

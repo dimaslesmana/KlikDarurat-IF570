@@ -3,7 +3,6 @@ package id.ac.umn.if570.titik.koma.klikdarurat;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -11,27 +10,25 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.navigation.Navigation;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputLayout;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class EditUserProfileActivity extends AppCompatActivity {
-    private TextInputLayout textInputFullName, textInputPhoneNumber, textInputEmail, textInputAddress;
-    private EditText etFullName, etPhoneNumber, etEmail, etAddress;
-    private String fullName, phoneNumber, email, address;
     private LinearLayout saveBtn;
-    private FirebaseAuth fAuth;
-    private FirebaseFirestore fStore;
-    private FirebaseUser currentUser;
+    private EditText etFullName;
+    private EditText etPhoneNumber;
+    private EditText etEmail;
+    private EditText etAddress;
+    private String fullName;
+    private String phoneNumber;
+    private String email;
+    private String address;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,20 +47,11 @@ public class EditUserProfileActivity extends AppCompatActivity {
         email = data.getStringExtra("email");
         address = data.getStringExtra("address");
 
-        fAuth = FirebaseAuth.getInstance();
-        fStore = FirebaseFirestore.getInstance();
-        currentUser = fAuth.getCurrentUser();
-
-        textInputFullName = findViewById(R.id.textInputLayout_edit_user_profile_full_name);
-        textInputPhoneNumber = findViewById(R.id.textInputLayout_edit_user_profile_phone_number);
-        textInputEmail = findViewById(R.id.textInputLayout_edit_user_profile_email);
-        textInputAddress = findViewById(R.id.textInputLayout_edit_user_profile_address);
         saveBtn = findViewById(R.id.linearlayout_edit_user_profile_save);
-
-        etFullName = textInputFullName.getEditText();
-        etPhoneNumber = textInputPhoneNumber.getEditText();
-        etEmail = textInputEmail.getEditText();
-        etAddress = textInputAddress.getEditText();
+        etFullName = ((TextInputLayout) findViewById(R.id.textInputLayout_edit_user_profile_full_name)).getEditText();
+        etPhoneNumber = ((TextInputLayout) findViewById(R.id.textInputLayout_edit_user_profile_phone_number)).getEditText();
+        etEmail = ((TextInputLayout) findViewById(R.id.textInputLayout_edit_user_profile_email)).getEditText();
+        etAddress = ((TextInputLayout) findViewById(R.id.textInputLayout_edit_user_profile_address)).getEditText();
 
         etEmail.setEnabled(false);
 
@@ -80,39 +68,64 @@ public class EditUserProfileActivity extends AppCompatActivity {
                 email = etEmail.getText().toString();
                 address = etAddress.getText().toString();
 
-                if(fullName.isEmpty() || phoneNumber.isEmpty() || email.isEmpty() || address.isEmpty()){
-                    Toast.makeText(EditUserProfileActivity.this, "One or many field are empty.", Toast.LENGTH_SHORT).show();
+                if (fullName.isEmpty()) {
+                    etFullName.setError("Nama lengkap wajib diisi.");
+                    etFullName.requestFocus();
                     return;
                 }
 
-                currentUser.updateEmail(email).addOnSuccessListener(new OnSuccessListener<Void>(){
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        DocumentReference docRef = fStore.collection("users").document(currentUser.getUid());
+                if (phoneNumber.isEmpty()) {
+                    etPhoneNumber.setError("Nomor telepon wajib diisi.");
+                    etPhoneNumber.requestFocus();
+                    return;
+                }
 
-                        Map<String,Object> edited = new HashMap<>();
-                        edited.put("fullName", fullName);
-                        edited.put("phoneNumber", phoneNumber);
-                        edited.put("email", email);
-                        edited.put("address", address);
+                if (address.isEmpty()) {
+                    etAddress.setError("Alamat wajib diisi.");
+                    etAddress.requestFocus();
+                    return;
+                }
 
-                        docRef.update(edited).addOnSuccessListener(new OnSuccessListener<Void>() {
+                if (email.isEmpty()) {
+                    Toast.makeText(EditUserProfileActivity.this, "Email wajib diisi.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                FirebaseUser currentUser = FirebaseHelper.instance.getCurrentUser();
+
+                currentUser.updateEmail(email)
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void unused) {
-                                Toast.makeText(EditUserProfileActivity.this, "Profile updated", Toast.LENGTH_SHORT).show();
-                                MainActivity.navController.navigate(R.id.nav_menu_user_profile);
-                                finish();
+                                Map<String,Object> editedUser = new HashMap<>();
+                                editedUser.put("fullName", fullName);
+                                editedUser.put("phoneNumber", phoneNumber);
+                                editedUser.put("email", email);
+                                editedUser.put("address", address);
+
+                                FirebaseHelper.instance.updateUserDocument(currentUser.getUid(), editedUser)
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void unused) {
+                                                Toast.makeText(EditUserProfileActivity.this, "Profil berhasil diperbarui.", Toast.LENGTH_SHORT).show();
+                                                MainActivity.navController.navigate(R.id.nav_menu_user_profile);
+                                                finish();
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Toast.makeText(EditUserProfileActivity.this, "Gagal edit akun.", Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(EditUserProfileActivity.this, "Gagal edit akun.", Toast.LENGTH_SHORT).show();
                             }
                         });
-
-                        // Toast
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(EditUserProfileActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
             }
         });
     }

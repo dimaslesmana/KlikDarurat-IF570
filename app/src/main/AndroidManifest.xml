@@ -23,12 +23,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.KlikDarurat">
-        <activity
-            android:name=".EditPersonalEmergencyContactActivity"
-            android:exported="false" />
-        <activity
-            android:name=".AddPersonalEmergencyContactActivity"
-            android:exported="false" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -43,17 +37,6 @@
 
         <activity
             android:name=".MainActivity"
-            android:exported="false"
-            android:theme="@style/Theme.KlikDarurat.NoActionBar" />
-        <activity
-            android:name=".LoginActivity"
-            android:exported="false"
-            android:theme="@style/Theme.KlikDarurat.NoActionBar" />
-        <activity
-            android:name=".EditUserProfileActivity"
-            android:exported="false" />
-        <activity
-            android:name=".RegisterActivity"
             android:exported="true"
             android:theme="@style/Theme.KlikDarurat.NoActionBar">
             <intent-filter>
@@ -62,6 +45,28 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".AddPersonalEmergencyContactActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".EditPersonalEmergencyContactActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".EditUserProfileActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".LoginActivity"
+            android:exported="false"
+            android:theme="@style/Theme.KlikDarurat.NoActionBar" />
+
+        <activity
+            android:name=".RegisterActivity"
+            android:exported="false"
+            android:theme="@style/Theme.KlikDarurat.NoActionBar" />
     </application>
 
 </manifest>

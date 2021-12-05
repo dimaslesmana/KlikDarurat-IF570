@@ -9,50 +9,96 @@ import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
-    private Button btnLogin;
-    private TextView tvForgotPassword;
+    private EditText etEmail;
+    private EditText etPassword;
     private TextView tvRegisterAccount;
-    private TextInputLayout editTextemail, editTextpassword;
+    private TextView tvForgotPassword;
+    private Button btnLogin;
     private ProgressBar progressBar;
-    private FirebaseAuth mAuth;
-    private FirebaseUser currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        mAuth = FirebaseAuth.getInstance();
-        currentUser = mAuth.getCurrentUser();
-
-        if (currentUser != null) {
+        if (FirebaseHelper.instance.isAuthenticated()) {
             startActivity(new Intent(this, MainActivity.class));
             finish();
-        }
-
-        Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            String message = extras.getString("REGISTRATION_SUCCESS");
-            Toast.makeText(LoginActivity.this, message, Toast.LENGTH_LONG).show();
+            return;
         }
 
         initView();
 
-        btnLogin.setOnClickListener(this);
-        tvForgotPassword.setOnClickListener(this);
         tvRegisterAccount.setOnClickListener(this);
+        tvForgotPassword.setOnClickListener(this);
+        btnLogin.setOnClickListener(this);
+    }
+
+    private void doLogin() {
+        String email = etEmail.getText().toString().trim();
+        String password = etPassword.getText().toString().trim();
+
+        if (email.isEmpty()) {
+            etEmail.setError("Email wajib diisi.");
+            etEmail.requestFocus();
+            return;
+        }
+
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            etEmail.setError("Email tidak valid.");
+            etEmail.requestFocus();
+            return;
+        }
+
+        if (password.isEmpty()) {
+            etPassword.setError("Kata sandi wajib diisi.");
+            etPassword.requestFocus();
+            return;
+        }
+
+        progressBar.setVisibility(View.VISIBLE);
+
+        FirebaseHelper.instance.loginUser(email, password)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        progressBar.setVisibility(View.GONE);
+                    }
+                })
+                .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+                    @Override
+                    public void onSuccess(AuthResult authResult) {
+                        FirebaseAuth auth = FirebaseHelper.instance.getAuth();
+                        FirebaseHelper.instance.setCurrentUser(auth.getCurrentUser());
+
+                        if (FirebaseHelper.instance.getCurrentUser().isEmailVerified()) {
+                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                            finish();
+                        } else {
+                            Toast.makeText(LoginActivity.this, "Harap verifikasi email Anda terlebih dahulu.", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(LoginActivity.this, "Gagal untuk masuk. Email atau kata sandi salah.", Toast.LENGTH_LONG).show();
+                    }
+                });
     }
 
     @Override
@@ -60,69 +106,21 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         int viewId = v.getId();
 
         if (viewId == btnLogin.getId()) {
-            Log.d("LoginActivity", "Login button clicked");
-            String email = editTextemail.getEditText().getText().toString().trim();
-            String password = editTextpassword.getEditText().getText().toString().trim();
-
-            if(email.isEmpty()){
-                editTextemail.setError("Email is required!");
-                editTextemail.requestFocus();
-                return;
-            }
-            if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-                editTextemail.setError("Please enter a valid email!");
-                editTextemail.requestFocus();
-                return;
-            }
-            if(password.isEmpty()){
-                editTextpassword.setError("Password is required!");
-                editTextpassword.requestFocus();
-                return;
-            }
-            if(password.length() < 6){
-                editTextpassword.setError("Min password length is 6 characters!");
-                editTextpassword.requestFocus();
-                return;
-            }
-
-            progressBar.setVisibility(View.VISIBLE);
-            mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
-                    if (task.isSuccessful()){
-                        progressBar.setVisibility(View.GONE);
-                        currentUser = mAuth.getCurrentUser();
-
-                        if (currentUser.isEmailVerified()) {
-                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                            finish();
-                        } else {
-                            Toast.makeText(LoginActivity.this, "Please verify your email first!", Toast.LENGTH_LONG).show();
-                        }
-                    } else {
-                        progressBar.setVisibility(View.GONE);
-                        Toast.makeText(LoginActivity.this, "Failed to login Please check your credentials", Toast.LENGTH_LONG).show();
-                    }
-                }
-            });
-        } else if (viewId == tvForgotPassword.getId()) {
-            Log.d("LoginActivity", "Forgot Password clicked");
+            doLogin();
         } else if (viewId == tvRegisterAccount.getId()) {
             startActivity(new Intent(this, RegisterActivity.class));
             finish();
+        } else if (viewId == tvForgotPassword.getId()) {
+            Log.d("LoginActivity", "Forgot Password clicked");
         }
-
     }
 
     private void initView() {
-        btnLogin = findViewById(R.id.button_login_login);
-        tvForgotPassword = findViewById(R.id.tv_login_forgot_password);
+        etEmail = ((TextInputLayout) findViewById(R.id.textInputLayout_login_email)).getEditText();
+        etPassword = ((TextInputLayout) findViewById(R.id.textInputLayout_login_password)).getEditText();
         tvRegisterAccount = findViewById(R.id.tv_login_register_account);
-        editTextemail = findViewById(R.id.textInputLayout_login_email);
-        editTextpassword = findViewById(R.id.textInputLayout_login_password);
-
-        progressBar = findViewById(R.id.progressBar);
-
         tvForgotPassword = findViewById(R.id.tv_login_forgot_password);
+        btnLogin = findViewById(R.id.button_login_login);
+        progressBar = findViewById(R.id.progressBar);
     }
 }
