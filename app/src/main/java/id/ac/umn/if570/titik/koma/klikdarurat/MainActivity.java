@@ -7,6 +7,7 @@ import androidx.navigation.ui.NavigationUI;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -19,7 +20,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         if (FirebaseHelper.instance == null) {
+            Log.d("FIREBASE-HELPER", "INSTANCE IS NULL");
             FirebaseHelper.instance = new FirebaseHelper();
+        } else {
+            Log.d("FIREBASE-HELPER", "INSTANCE IS NOT NULL");
         }
 
         if (FirebaseHelper.instance.isAuthenticated()) {

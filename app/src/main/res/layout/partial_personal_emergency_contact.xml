@@ -72,13 +72,29 @@
             app:srcCompat="@drawable/ic_sort" />
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/tv_personal_emergency_contact_empty"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:visibility="invisible"
+        android:padding="18dp"
+        android:gravity="center"
+        android:text="@string/personal_emergency_contact_tv_empty"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/tv_personal_emergency_contact_a_z"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_personal_emergency_contact"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         tools:listitem="@layout/item_row_personal_emergency_contact"
         app:layout_constraintTop_toBottomOf="@id/tv_personal_emergency_contact_a_z"
-        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

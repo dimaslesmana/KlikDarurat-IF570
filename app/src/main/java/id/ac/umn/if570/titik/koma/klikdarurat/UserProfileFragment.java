@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -25,11 +24,11 @@ import com.google.firebase.firestore.ListenerRegistration;
  * create an instance of this fragment.
  */
 public class UserProfileFragment extends Fragment {
-    private LinearLayout linearlayoutEdit;
     private TextView tvFullName;
     private TextView tvPhoneNumber;
     private TextView tvEmail;
     private TextView tvAddress;
+    private Button btnEdit;
     private Button btnLogout;
     private String userID;
     private ListenerRegistration userDocumentListenerRegistration;
@@ -83,14 +82,14 @@ public class UserProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_user_profile, container, false);
 
-        linearlayoutEdit = view.findViewById(R.id.linearlayout_profile_edit);
+        btnEdit = view.findViewById(R.id.btn_profile_edit);
         tvFullName = view.findViewById(R.id.tv_profile_full_name);
         tvPhoneNumber = view.findViewById(R.id.tv_profile_phone_number);
         tvEmail = view.findViewById(R.id.tv_profile_email);
         tvAddress = view.findViewById(R.id.tv_profile_address);
         btnLogout = view.findViewById(R.id.btn_profile_logout);
 
-        linearlayoutEdit.setOnClickListener(v -> {
+        btnEdit.setOnClickListener(v -> {
             Intent intent = new Intent(getContext(), EditUserProfileActivity.class);
             intent.putExtra("fullName", tvFullName.getText().toString());
             intent.putExtra("phoneNumber", tvPhoneNumber.getText().toString());
@@ -106,6 +105,10 @@ public class UserProfileFragment extends Fragment {
 
             FirebaseHelper.instance.logoutUser();
             startActivity(new Intent(getContext(), MainActivity.class));
+
+            if (getActivity() != null) {
+                getActivity().finishAffinity();
+            }
         });
 
         userID = FirebaseHelper.instance.getCurrentUser().getUid();

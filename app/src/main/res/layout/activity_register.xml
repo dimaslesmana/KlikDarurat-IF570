@@ -117,34 +117,32 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
+            style="@style/Widget.MaterialComponents.Button.Icon"
             android:id="@+id/button_register_register"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="18dp"
-            android:width="180dp"
-            android:height="60dp"
-            android:backgroundTint="@color/light_blue_500"
+            android:minHeight="52dp"
             android:text="@string/button_register"
             android:textSize="16sp"
             app:cornerRadius="50dp"
-            app:layout_constraintBottom_toTopOf="@id/tv_register_login_account"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.497"
+            app:icon="@drawable/ic_login"
+            app:layout_constraintTop_toBottomOf="@id/textInputLayout_register_password"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textInputLayout_register_password" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/btn_register_login_account"/>
 
-        <TextView
-            android:id="@+id/tv_register_login_account"
+        <Button
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:id="@+id/btn_register_login_account"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/register_tv_login_account"
-            android:textColor="@color/light_blue_500"
+            android:text="@string/register_btn_login_account"
             android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintTop_toBottomOf="@id/button_register_register"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/button_register_register" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
 
         <ProgressBar
             android:id="@+id/progressBar"
@@ -157,8 +155,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            />
+            app:layout_constraintRight_toRightOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

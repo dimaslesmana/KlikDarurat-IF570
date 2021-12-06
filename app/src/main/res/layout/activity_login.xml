@@ -76,28 +76,28 @@
             app:layout_constraintBottom_toTopOf="@id/button_login_login"/>
 
         <Button
+            style="@style/Widget.MaterialComponents.Button.Icon"
             android:id="@+id/button_login_login"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="18dp"
-            android:minWidth="180dp"
-            android:minHeight="60dp"
-            android:backgroundTint="@color/light_blue_500"
+            android:minHeight="52dp"
             android:text="@string/button_login"
             android:textSize="16sp"
             app:cornerRadius="50dp"
+            app:icon="@drawable/ic_login"
             app:layout_constraintTop_toBottomOf="@id/tv_login_forgot_password"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/tv_login_register_account"/>
+            app:layout_constraintBottom_toTopOf="@id/btn_login_register_account"/>
 
-        <TextView
-            android:id="@+id/tv_login_register_account"
+        <Button
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:id="@+id/btn_login_register_account"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/login_tv_register_account"
+            android:text="@string/login_btn_register_account"
             android:textSize="16sp"
-            android:textColor="@color/light_blue_500"
             app:layout_constraintTop_toBottomOf="@id/button_login_login"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -114,9 +114,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            />
+            app:layout_constraintRight_toRightOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>
-

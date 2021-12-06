@@ -1,5 +1,6 @@
 package id.ac.umn.if570.titik.koma.klikdarurat;
 
+import android.app.Person;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
@@ -18,20 +19,18 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentChange;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
@@ -43,15 +42,12 @@ import java.util.ArrayList;
  *
  */
 public class PersonalEmergencyContactFragment extends Fragment implements View.OnClickListener {
-    private FirebaseFirestore firestore;
-    private FirebaseAuth firebaseAuth;
-    private FirebaseUser currentUser;
+    private TextView tvPersonalEmergencyContactEmpty;
     private FloatingActionButton fabAddContact;
     private RecyclerView rvPersonalEmergencyContact;
-    private PersonalEmergencyContactAdapter adapter;
+    private FirestoreRecyclerAdapter adapter;
     private PersonalEmergencyContact selectedContact;
     private ProgressDialog progressDialog;
-    private ArrayList<PersonalEmergencyContact> personalEmergencyContacts = new ArrayList<>();
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -84,6 +80,16 @@ public class PersonalEmergencyContactFragment extends Fragment implements View.O
         // Required empty public constructor
     }
 
+    private class PersonalEmergencyContactViewHolder extends RecyclerView.ViewHolder {
+        private TextView tvName;
+
+        public PersonalEmergencyContactViewHolder(@NonNull View itemView) {
+            super(itemView);
+
+            tvName = itemView.findViewById(R.id.tv_personal_emergency_contact_name);
+        }
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,12 +98,13 @@ public class PersonalEmergencyContactFragment extends Fragment implements View.O
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
-        firestore = FirebaseFirestore.getInstance();
-        firebaseAuth = FirebaseAuth.getInstance();
-        currentUser = firebaseAuth.getCurrentUser();
+        if (!FirebaseHelper.instance.isAuthenticated()) {
+            startActivity(new Intent(getContext(), LoginActivity.class));
 
-        if (currentUser == null) {
-            startActivity(new Intent(getActivity(), LoginActivity.class));
+            if (getActivity() != null) {
+                getActivity().finishAffinity();
+            }
+            return;
         }
 
         progressDialog = new ProgressDialog(getContext());
@@ -105,41 +112,71 @@ public class PersonalEmergencyContactFragment extends Fragment implements View.O
         progressDialog.setMessage("Loading...");
         progressDialog.show();
 
-        DocumentReference docRef = firestore.collection("users").document(currentUser.getUid());
+        String userId = FirebaseHelper.instance.getCurrentUser().getUid();
+        FirestoreRecyclerOptions<PersonalEmergencyContact> options = new FirestoreRecyclerOptions.Builder<PersonalEmergencyContact>()
+                .setQuery(FirebaseHelper.instance.getContactsDocument(userId), PersonalEmergencyContact.class)
+                .build();
 
-        docRef.collection("contacts").orderBy("name", Query.Direction.ASCENDING).whereNotEqualTo("name", "EMPTY_RESERVED").addSnapshotListener(new EventListener<QuerySnapshot>() {
+        adapter = new FirestoreRecyclerAdapter<PersonalEmergencyContact, PersonalEmergencyContactViewHolder>(options) {
             @Override
-            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                if (error != null) {
-                    if (progressDialog.isShowing()) {
-                        progressDialog.dismiss();
-                    }
-
-                    Log.e("PersonalContacts", error.getMessage());
-                    return;
-                }
-
-                if (value.isEmpty()) {
-                    if (progressDialog.isShowing()) {
-                        progressDialog.dismiss();
-                    }
-                    return;
-                }
-
-                for (DocumentChange documentChange : value.getDocumentChanges()) {
-                    if (documentChange.getType() == DocumentChange.Type.ADDED) {
-                        PersonalEmergencyContact contact = documentChange.getDocument().toObject(PersonalEmergencyContact.class);
-                        personalEmergencyContacts.add(contact);
-                    }
-
-                    adapter.notifyDataSetChanged();
-                }
+            public void onDataChanged() {
+                super.onDataChanged();
 
                 if (progressDialog.isShowing()) {
                     progressDialog.dismiss();
                 }
+
+                if (getItemCount() != 0) {
+                    rvPersonalEmergencyContact.setVisibility(View.VISIBLE);
+                    tvPersonalEmergencyContactEmpty.setVisibility(View.INVISIBLE);
+                } else {
+                    rvPersonalEmergencyContact.setVisibility(View.INVISIBLE);
+                    tvPersonalEmergencyContactEmpty.setVisibility(View.VISIBLE);
+                }
             }
-        });
+
+            @Override
+            public void onError(@NonNull FirebaseFirestoreException e) {
+                super.onError(e);
+                if (progressDialog.isShowing()) {
+                    progressDialog.dismiss();
+                }
+
+                Toast.makeText(getContext(), "Gagal memuat daftar kontak.", Toast.LENGTH_SHORT).show();
+
+                Log.e("PersonalContacts", e.getMessage());
+            }
+
+            @NonNull
+            @Override
+            public PersonalEmergencyContactViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_row_personal_emergency_contact, parent, false);
+
+                return new PersonalEmergencyContactViewHolder(view);
+            }
+
+            @Override
+            protected void onBindViewHolder(@NonNull PersonalEmergencyContactViewHolder holder, int position, @NonNull PersonalEmergencyContact contact) {
+                holder.tvName.setText(contact.getName());
+
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Uri phoneNumber = Uri.parse("tel:" + contact.getPhoneNumber());
+                        Intent intent = new Intent(Intent.ACTION_DIAL, phoneNumber);
+                        startActivity(intent);
+                    }
+                });
+
+                holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        selectedContact = contact;
+                        return false;
+                    }
+                });
+            }
+        };
     }
 
     @Override
@@ -148,32 +185,33 @@ public class PersonalEmergencyContactFragment extends Fragment implements View.O
 
         fabAddContact = view.findViewById(R.id.fab_personal_emergency_contact_add);
         rvPersonalEmergencyContact = view.findViewById(R.id.rv_personal_emergency_contact);
+        tvPersonalEmergencyContactEmpty = view.findViewById(R.id.tv_personal_emergency_contact_empty);
+
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
         fabAddContact.setOnClickListener(this);
         rvPersonalEmergencyContact.setHasFixedSize(true);
-        rvPersonalEmergencyContact.setLayoutManager(new LinearLayoutManager(view.getContext()));
-
-        adapter = new PersonalEmergencyContactAdapter(view.getContext(), personalEmergencyContacts);
+        rvPersonalEmergencyContact.setLayoutManager(new LinearLayoutManager(getContext()));
         rvPersonalEmergencyContact.setAdapter(adapter);
 
         registerForContextMenu(rvPersonalEmergencyContact);
-        adapter.setOnItemClickCallback(new PersonalEmergencyContactAdapter.OnItemClickCallback() {
-            @Override
-            public void OnItemClicked(PersonalEmergencyContact contact) {
-                Uri phoneNumber = Uri.parse("tel:" + contact.getPhoneNumber());
-                Intent intent = new Intent(Intent.ACTION_DIAL, phoneNumber);
-                startActivity(intent);
-            }
-        });
+    }
 
-        adapter.setOnLongItemClickCallback(new PersonalEmergencyContactAdapter.OnLongItemClickCallback() {
-            @Override
-            public void OnLongItemClicked(PersonalEmergencyContact contact) {
-                selectedContact = contact;
-            }
-        });
+    @Override
+    public void onStart() {
+        super.onStart();
+        adapter.startListening();
+    }
 
-        return view;
+    @Override
+    public void onStop() {
+        super.onStop();
+        adapter.stopListening();
     }
 
     @Override
@@ -210,28 +248,27 @@ public class PersonalEmergencyContactFragment extends Fragment implements View.O
         Intent intent = new Intent(getContext(), EditPersonalEmergencyContactActivity.class);
         Bundle bundle = new Bundle();
 
-        bundle.putSerializable("SELECTED_CONTACT", selectedContact);
+        bundle.putSerializable(EditPersonalEmergencyContactActivity.EXTRA_SELECTED_CONTACT, selectedContact);
         intent.putExtras(bundle);
 
         startActivity(intent);
     }
 
     private void deleteContact() {
-        DocumentReference docRef = firestore.collection("users").document(currentUser.getUid());
+        String currentUserId = FirebaseHelper.instance.getCurrentUser().getUid();
 
-        docRef.collection("contacts").document(selectedContact.getId())
-                .delete()
+        FirebaseHelper.instance.deleteContactDocument(currentUserId, selectedContact.getId())
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
-                        adapter.notifyDataSetChanged();
-                        Toast.makeText(getContext(), selectedContact.getName() + " deleted.", Toast.LENGTH_SHORT).show();
+                        //adapter.notifyDataSetChanged();
+                        Toast.makeText(getContext(),"Kontak berhasil dihapus.", Toast.LENGTH_SHORT).show();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(getContext(), "Failed to delete contact!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Gagal menghapus kontak.", Toast.LENGTH_SHORT).show();
                     }
                 });
     }

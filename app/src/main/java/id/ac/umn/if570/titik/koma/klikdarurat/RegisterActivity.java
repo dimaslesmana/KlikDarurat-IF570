@@ -30,8 +30,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     private EditText etAddress;
     private EditText etEmail;
     private EditText etPassword;
-    private TextView tvLoginAccount;
     private Button btnRegister;
+    private Button btnLoginAccount;
     private ProgressBar progressBar;
 
     @Override
@@ -47,8 +47,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
         initView();
 
-        tvLoginAccount.setOnClickListener(this);
         btnRegister.setOnClickListener(this);
+        btnLoginAccount.setOnClickListener(this);
     }
 
     private void createContactsCollection(String userId) {
@@ -135,7 +135,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                                         FirebaseHelper.instance.logoutUser();
 
                                         Toast.makeText(RegisterActivity.this, "Berhasil membuat akun, silakan verifikasi email Anda.", Toast.LENGTH_LONG).show();
-                                        startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
+                                        startActivity(new Intent(RegisterActivity.this, MainActivity.class));
                                         finish();
                                     }
                                 })
@@ -162,7 +162,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
         if (viewId == btnRegister.getId()) {
             doRegister();
-        } else if (viewId == tvLoginAccount.getId()) {
+        } else if (viewId == btnLoginAccount.getId()) {
             startActivity(new Intent(this, LoginActivity.class));
             finish();
         }
@@ -174,7 +174,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         etAddress = ((TextInputLayout) findViewById(R.id.textInputLayout_register_address)).getEditText();
         etEmail = ((TextInputLayout) findViewById(R.id.textInputLayout_register_email)).getEditText();
         etPassword = ((TextInputLayout) findViewById(R.id.textInputLayout_register_password)).getEditText();
-        tvLoginAccount = findViewById(R.id.tv_register_login_account);
+        btnLoginAccount = findViewById(R.id.btn_register_login_account);
         btnRegister = findViewById(R.id.button_register_register);
         progressBar = findViewById(R.id.progressBar);
     }

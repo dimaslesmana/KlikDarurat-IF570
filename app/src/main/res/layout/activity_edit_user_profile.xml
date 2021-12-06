@@ -114,7 +114,7 @@
             app:layout_constraintTop_toBottomOf="@id/textInputLayout_edit_user_profile_email"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/linearlayout_edit_user_profile_save">
+            app:layout_constraintBottom_toTopOf="@id/btn_edit_user_profile_save">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
@@ -123,33 +123,20 @@
                 android:inputType="textMultiLine" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <LinearLayout
-            android:id="@+id/linearlayout_edit_user_profile_save"
+        <Button
+            style="@style/Widget.MaterialComponents.Button.Icon"
+            android:id="@+id/btn_edit_user_profile_save"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="24dp"
-            android:orientation="vertical"
-            android:clickable="true"
+            android:layout_margin="18dp"
+            android:text="@string/label_save"
+            android:textSize="16sp"
+            app:cornerRadius="50dp"
+            app:icon="@drawable/ic_save"
             app:layout_constraintTop_toBottomOf="@id/textInputLayout_edit_user_profile_address"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent">
-
-            <ImageButton
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:background="@color/transparent"
-                app:srcCompat="@drawable/ic_save"
-                app:tint="@color/light_blue_500" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/label_save"
-                android:textColor="@color/light_blue_500"
-                android:textStyle="bold" />
-        </LinearLayout>
+            app:layout_constraintBottom_toBottomOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

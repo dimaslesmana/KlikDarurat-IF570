@@ -7,6 +7,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 
 import java.util.Map;
 
@@ -50,7 +51,7 @@ public class FirebaseHelper {
 
     public void logoutUser() {
         this.auth.signOut();
-        FirebaseHelper.instance = null;
+        this.instance = null;
     }
 
     public Task<AuthResult> registerUser(String email, String password) {
@@ -62,24 +63,51 @@ public class FirebaseHelper {
     }
 
     /**
-     * Get user data
+     * Get user profile data
      */
     public DocumentReference getUserDocument(String userId) {
         return this.usersCollection.document(userId);
     }
 
     /**
-     * Update user data
-     * @return
+     * Update user profile data
      */
     public Task<Void> updateUserDocument(String userId, Map<String, Object> editedUser) {
         return this.usersCollection.document(userId).update(editedUser);
     }
 
     /**
-     * Create contacts collection inside user document (create contacts sub-collection)
+     * Create personal contacts collection inside user document (create contacts sub-collection)
      */
     public Task<Void> createContactsCollection(String userId, Map<String, Object> contact) {
        return this.usersCollection.document(userId).collection("contacts").document("EMPTY_RESERVED").set(contact);
+    }
+
+    /**
+     * Get personal contacts document from contacts collection inside user document
+     */
+    public Query getContactsDocument(String userId) {
+        return this.usersCollection.document(userId).collection("contacts").orderBy("name", Query.Direction.ASCENDING).whereNotEqualTo("name", "EMPTY_RESERVED");
+    }
+
+    /**
+     * Add personal contact document
+     */
+    public Task<DocumentReference> addContactDocument(String userId, Map<String, Object> newContact) {
+        return this.usersCollection.document(userId).collection("contacts").add(newContact);
+    }
+
+    /**
+     * Update personal contact document
+     */
+    public Task<Void> updateContactDocument(String currentUserId, String contactId, Map<String, Object> updatedContact) {
+        return this.usersCollection.document(currentUserId).collection("contacts").document(contactId).update(updatedContact);
+    }
+
+    /**
+     * Delete personal contact document
+     */
+    public Task<Void> deleteContactDocument(String currentUserId, String contactId) {
+        return this.usersCollection.document(currentUserId).collection("contacts").document(contactId).delete();
     }
 }

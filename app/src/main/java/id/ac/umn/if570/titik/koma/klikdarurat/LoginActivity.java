@@ -25,9 +25,9 @@ import com.google.firebase.auth.FirebaseAuth;
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
     private EditText etEmail;
     private EditText etPassword;
-    private TextView tvRegisterAccount;
     private TextView tvForgotPassword;
     private Button btnLogin;
+    private Button btnRegisterAccount;
     private ProgressBar progressBar;
 
     @Override
@@ -43,9 +43,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         initView();
 
-        tvRegisterAccount.setOnClickListener(this);
         tvForgotPassword.setOnClickListener(this);
         btnLogin.setOnClickListener(this);
+        btnRegisterAccount.setOnClickListener(this);
     }
 
     private void doLogin() {
@@ -107,7 +107,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         if (viewId == btnLogin.getId()) {
             doLogin();
-        } else if (viewId == tvRegisterAccount.getId()) {
+        } else if (viewId == btnRegisterAccount.getId()) {
             startActivity(new Intent(this, RegisterActivity.class));
             finish();
         } else if (viewId == tvForgotPassword.getId()) {
@@ -118,7 +118,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private void initView() {
         etEmail = ((TextInputLayout) findViewById(R.id.textInputLayout_login_email)).getEditText();
         etPassword = ((TextInputLayout) findViewById(R.id.textInputLayout_login_password)).getEditText();
-        tvRegisterAccount = findViewById(R.id.tv_login_register_account);
+        btnRegisterAccount = findViewById(R.id.btn_login_register_account);
         tvForgotPassword = findViewById(R.id.tv_login_forgot_password);
         btnLogin = findViewById(R.id.button_login_login);
         progressBar = findViewById(R.id.progressBar);

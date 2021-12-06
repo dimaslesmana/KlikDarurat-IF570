@@ -3,6 +3,7 @@ package id.ac.umn.if570.titik.koma.klikdarurat;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -20,11 +21,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class EditUserProfileActivity extends AppCompatActivity {
-    private LinearLayout saveBtn;
     private EditText etFullName;
     private EditText etPhoneNumber;
     private EditText etEmail;
     private EditText etAddress;
+    private Button btnSave;
     private String fullName;
     private String phoneNumber;
     private String email;
@@ -47,7 +48,7 @@ public class EditUserProfileActivity extends AppCompatActivity {
         email = data.getStringExtra("email");
         address = data.getStringExtra("address");
 
-        saveBtn = findViewById(R.id.linearlayout_edit_user_profile_save);
+        btnSave = findViewById(R.id.btn_edit_user_profile_save);
         etFullName = ((TextInputLayout) findViewById(R.id.textInputLayout_edit_user_profile_full_name)).getEditText();
         etPhoneNumber = ((TextInputLayout) findViewById(R.id.textInputLayout_edit_user_profile_phone_number)).getEditText();
         etEmail = ((TextInputLayout) findViewById(R.id.textInputLayout_edit_user_profile_email)).getEditText();
@@ -60,7 +61,7 @@ public class EditUserProfileActivity extends AppCompatActivity {
         etEmail.setText(email);
         etAddress.setText(address);
 
-        saveBtn.setOnClickListener(new View.OnClickListener() {
+        btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 fullName = etFullName.getText().toString();

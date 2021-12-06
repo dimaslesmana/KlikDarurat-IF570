@@ -14,6 +14,9 @@
 
     <!-- Emergency Service Location -->
     <string name="emergency_service_location_tv_title">Lokasi Layanan Darurat</string>
+    <string name="emergency_service_location_chip_hospital">Rumah Sakit</string>
+    <string name="emergency_service_location_chip_police">Kantor Polisi</string>
+    <string name="emergency_service_location_chip_fire_station">Pemadam Kebakaran</string>
 
     <!-- Personal Emergency Contact -->
     <string name="personal_emergency_contact_tv_title">Kontak Darurat</string>
@@ -35,11 +38,11 @@
 
     <!-- Login -->
     <string name="login_tv_title">Masuk</string>
-    <string name="login_tv_register_account">Daftar Akun Baru</string>
+    <string name="login_btn_register_account">Daftar Akun Baru</string>
 
     <!-- Register -->
     <string name="register_tv_title">Daftar Akun Baru</string>
-    <string name="register_tv_login_account">Masuk</string>
+    <string name="register_btn_login_account">Masuk</string>
 
     <!-- Label -->
     <string name="label_full_name">Nama Lengkap</string>
@@ -67,7 +70,4 @@
     <string name="nav_personal_emergency_contact">Kontak Darurat</string>
     <string name="nav_emergency_service_location">Lokasi</string>
     <string name="nav_user_profile">Profil</string>
-
-    <string name="title_activity_maps">MapsActivity</string>
-    <string name="nearby_url_api" />
 </resources>
