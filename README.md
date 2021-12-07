@@ -1,4 +1,11 @@
 # KlikDarurat-IF570
+## Setup
+Untuk API key Google Maps, tambahkan kode dibawah ke dalam file `local.properties`.
+```local.properties
+MAPS_API_KEY=AIzaSyCIDQuuJK6jYfDB1jn_O2H-eeNVc8iNf-k
+```
+API key juga dapat dilihat pada file `res/values/google_maps_api.xml`
+
 
 ## Kelompok Titik Koma
 ### Anggota
