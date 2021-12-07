@@ -6,7 +6,6 @@ import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
-import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
@@ -16,9 +15,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.Spinner;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -31,8 +27,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.material.chip.Chip;
+import com.google.android.material.progressindicator.CircularProgressIndicator;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -60,6 +56,7 @@ public class EmergencyServiceLocationFragment extends Fragment implements OnMapR
     private Chip chipHospital;
     private Chip chipPolice;
     private Chip chipFireStation;
+    private CircularProgressIndicator circularProgressIndicator;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -178,6 +175,7 @@ public class EmergencyServiceLocationFragment extends Fragment implements OnMapR
         this.chipHospital = view.findViewById(R.id.chip_emergency_service_location_hospital);
         this.chipPolice = view.findViewById(R.id.chip_emergency_service_location_police);
         this.chipFireStation = view.findViewById(R.id.chip_emergency_service_location_fire_station);
+        this.circularProgressIndicator = view.findViewById(R.id.circularProgressIndicator);
 
         return view;
     }
@@ -187,13 +185,14 @@ public class EmergencyServiceLocationFragment extends Fragment implements OnMapR
         super.onViewCreated(view, savedInstanceState);
 
         // Check permission
-        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             getCurrentLocation();
         } else {
             ActivityCompat.requestPermissions(getActivity(), new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, 44);
         }
 
-//        this.spType.setAdapter(new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, placeNameList));
+        circularProgressIndicator.setVisibility(View.VISIBLE);
+
         this.mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.fragment_emergency_service_location_map);
         this.chipHospital.setOnClickListener(this);
         this.chipPolice.setOnClickListener(this);
@@ -215,6 +214,8 @@ public class EmergencyServiceLocationFragment extends Fragment implements OnMapR
 
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
+        circularProgressIndicator.setVisibility(View.GONE);
+
         this.googleMap = googleMap;
         this.googleMap.addMarker(new MarkerOptions()
                 .position(this.currentLocation)
@@ -245,14 +246,6 @@ public class EmergencyServiceLocationFragment extends Fragment implements OnMapR
             this.chipFireStation.setChecked(true);
 
             new PlaceTask().execute(getNearbySearchUrl("fire_station"));
-        }
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        if (this.googleMap != null) {
-            this.googleMap.clear();
         }
     }
 

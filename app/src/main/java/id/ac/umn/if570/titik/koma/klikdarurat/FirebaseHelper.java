@@ -86,8 +86,19 @@ public class FirebaseHelper {
     /**
      * Get personal contacts document from contacts collection inside user document
      */
-    public Query getContactsDocument(String userId) {
-        return this.usersCollection.document(userId).collection("contacts").orderBy("name", Query.Direction.ASCENDING).whereNotEqualTo("name", "EMPTY_RESERVED");
+    public Query getContactsDocument(String userId, boolean sortAscending) {
+        if (sortAscending) {
+            return this.usersCollection.document(userId).collection("contacts").orderBy("_nameOrder", Query.Direction.ASCENDING).whereNotEqualTo("_nameOrder", "EMPTY_RESERVED");
+        } else {
+            return this.usersCollection.document(userId).collection("contacts").orderBy("_nameOrder", Query.Direction.DESCENDING).whereNotEqualTo("_nameOrder", "EMPTY_RESERVED");
+        }
+    }
+
+    /**
+     * Search personal contacts document from contacts collection inside user document
+     */
+    public Query searchContactsDocument(String userId, String searchText) {
+        return this.usersCollection.document(userId).collection("contacts").orderBy("_nameSearch").startAt(searchText).endAt(searchText + "\uf8ff");
     }
 
     /**

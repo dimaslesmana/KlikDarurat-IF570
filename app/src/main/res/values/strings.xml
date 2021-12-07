@@ -21,6 +21,7 @@
     <!-- Personal Emergency Contact -->
     <string name="personal_emergency_contact_tv_title">Kontak Darurat</string>
     <string name="personal_emergency_contact_tv_a_z">A - Z</string>
+    <string name="personal_emergency_contact_tv_z_a">Z - A</string>
     <string name="personal_emergency_contact_tv_sort">Sort</string>
     <string name="personal_emergency_contact_tv_empty">Tidak ada daftar kontak!</string>
 
@@ -49,7 +50,8 @@
     <string name="label_phone_number">Nomor Telepon</string>
     <string name="label_email">Email</string>
     <string name="label_address">Alamat</string>
-    <string name="label_forgot_password">Lupa Password?</string>
+    <string name="label_forgot_password">Lupa kata sandi?</string>
+    <string name="label_reset_password">Atur Ulang Kata Sandi</string>
     <string name="label_edit">Edit</string>
     <string name="label_save">Simpan</string>
 
@@ -59,6 +61,12 @@
     <string name="hint_email">Email</string>
     <string name="hint_address">Alamat</string>
     <string name="hint_password">Kata Sandi</string>
+
+    <!-- Dialog -->
+    <string name="dialog_yes">Ya</string>
+    <string name="dialog_send">Kirim</string>
+    <string name="dialog_delete">Hapus</string>
+    <string name="dialog_cancel">Batal</string>
 
     <!-- Button -->
     <string name="button_register">Daftar</string>

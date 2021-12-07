@@ -5,15 +5,17 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -30,6 +32,7 @@ public class EditUserProfileActivity extends AppCompatActivity {
     private String phoneNumber;
     private String email;
     private String address;
+    private CircularProgressIndicator circularProgressIndicator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,11 +51,7 @@ public class EditUserProfileActivity extends AppCompatActivity {
         email = data.getStringExtra("email");
         address = data.getStringExtra("address");
 
-        btnSave = findViewById(R.id.btn_edit_user_profile_save);
-        etFullName = ((TextInputLayout) findViewById(R.id.textInputLayout_edit_user_profile_full_name)).getEditText();
-        etPhoneNumber = ((TextInputLayout) findViewById(R.id.textInputLayout_edit_user_profile_phone_number)).getEditText();
-        etEmail = ((TextInputLayout) findViewById(R.id.textInputLayout_edit_user_profile_email)).getEditText();
-        etAddress = ((TextInputLayout) findViewById(R.id.textInputLayout_edit_user_profile_address)).getEditText();
+        initView();
 
         etEmail.setEnabled(false);
 
@@ -92,6 +91,8 @@ public class EditUserProfileActivity extends AppCompatActivity {
                     return;
                 }
 
+                circularProgressIndicator.setVisibility(View.VISIBLE);
+
                 FirebaseUser currentUser = FirebaseHelper.instance.getCurrentUser();
 
                 currentUser.updateEmail(email)
@@ -105,6 +106,12 @@ public class EditUserProfileActivity extends AppCompatActivity {
                                 editedUser.put("address", address);
 
                                 FirebaseHelper.instance.updateUserDocument(currentUser.getUid(), editedUser)
+                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                circularProgressIndicator.setVisibility(View.GONE);
+                                            }
+                                        })
                                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                                             @Override
                                             public void onSuccess(Void unused) {
@@ -124,6 +131,7 @@ public class EditUserProfileActivity extends AppCompatActivity {
                         .addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
+                                circularProgressIndicator.setVisibility(View.GONE);
                                 Toast.makeText(EditUserProfileActivity.this, "Gagal edit akun.", Toast.LENGTH_SHORT).show();
                             }
                         });
@@ -135,5 +143,14 @@ public class EditUserProfileActivity extends AppCompatActivity {
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return super.onSupportNavigateUp();
+    }
+
+    private void initView() {
+        btnSave = findViewById(R.id.btn_edit_user_profile_save);
+        etFullName = ((TextInputLayout) findViewById(R.id.textInputLayout_edit_user_profile_full_name)).getEditText();
+        etPhoneNumber = ((TextInputLayout) findViewById(R.id.textInputLayout_edit_user_profile_phone_number)).getEditText();
+        etEmail = ((TextInputLayout) findViewById(R.id.textInputLayout_edit_user_profile_email)).getEditText();
+        etAddress = ((TextInputLayout) findViewById(R.id.textInputLayout_edit_user_profile_address)).getEditText();
+        circularProgressIndicator = findViewById(R.id.circularProgressIndicator);
     }
 }

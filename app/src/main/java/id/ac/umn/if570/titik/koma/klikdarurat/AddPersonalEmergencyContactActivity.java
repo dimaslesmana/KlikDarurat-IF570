@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -16,6 +15,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.firestore.DocumentReference;
 
@@ -26,7 +26,7 @@ public class AddPersonalEmergencyContactActivity extends AppCompatActivity imple
     private EditText etName;
     private EditText etPhoneNumber;
     private Button btnSave;
-    private ProgressDialog progressDialog;
+    private CircularProgressIndicator circularProgressIndicator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,10 +46,6 @@ public class AddPersonalEmergencyContactActivity extends AppCompatActivity imple
         }
 
         initView();
-
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setCancelable(false);
-        progressDialog.setMessage("Loading...");
 
         btnSave.setOnClickListener(this);
     }
@@ -88,9 +84,11 @@ public class AddPersonalEmergencyContactActivity extends AppCompatActivity imple
             return;
         }
 
-        progressDialog.show();
+        circularProgressIndicator.setVisibility(View.VISIBLE);
 
         Map<String, Object> newContact = new HashMap<>();
+        newContact.put("_nameSearch", contactName.toLowerCase());
+        newContact.put("_nameOrder", contactName.toUpperCase());
         newContact.put("name", contactName);
         newContact.put("phoneNumber", contactPhoneNumber);
 
@@ -98,9 +96,7 @@ public class AddPersonalEmergencyContactActivity extends AppCompatActivity imple
                 .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentReference> task) {
-                        if (progressDialog.isShowing()) {
-                            progressDialog.dismiss();
-                        }
+                        circularProgressIndicator.setVisibility(View.GONE);
                     }
                 })
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
@@ -140,5 +136,6 @@ public class AddPersonalEmergencyContactActivity extends AppCompatActivity imple
         etName = ((TextInputLayout) findViewById(R.id.textInputLayout_add_personal_emergency_contact_name)).getEditText();
         etPhoneNumber = ((TextInputLayout) findViewById(R.id.textInputLayout_add_personal_emergency_contact_phone_number)).getEditText();
         btnSave = findViewById(R.id.btn_add_personal_emergency_contact_save);
+        circularProgressIndicator = findViewById(R.id.circularProgressIndicator);
     }
 }

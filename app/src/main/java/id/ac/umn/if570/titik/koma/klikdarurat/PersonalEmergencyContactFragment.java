@@ -1,7 +1,6 @@
 package id.ac.umn.if570.titik.koma.klikdarurat;
 
-import android.app.Person;
-import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -19,21 +18,21 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.firestore.DocumentChange;
-import com.google.firebase.firestore.EventListener;
+import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.ListenerRegistration;
-import com.google.firebase.firestore.QuerySnapshot;
-
-import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -42,12 +41,17 @@ import java.util.ArrayList;
  *
  */
 public class PersonalEmergencyContactFragment extends Fragment implements View.OnClickListener {
+    private SearchView searchView;
+    private LinearLayout linearLayoutSort;
     private TextView tvPersonalEmergencyContactEmpty;
+    private TextView tvSortAz;
     private FloatingActionButton fabAddContact;
     private RecyclerView rvPersonalEmergencyContact;
     private FirestoreRecyclerAdapter adapter;
     private PersonalEmergencyContact selectedContact;
-    private ProgressDialog progressDialog;
+    private CircularProgressIndicator circularProgressIndicator;
+
+    private boolean sortAscending = true;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -85,7 +89,6 @@ public class PersonalEmergencyContactFragment extends Fragment implements View.O
 
         public PersonalEmergencyContactViewHolder(@NonNull View itemView) {
             super(itemView);
-
             tvName = itemView.findViewById(R.id.tv_personal_emergency_contact_name);
         }
     }
@@ -107,24 +110,142 @@ public class PersonalEmergencyContactFragment extends Fragment implements View.O
             return;
         }
 
-        progressDialog = new ProgressDialog(getContext());
-        progressDialog.setCancelable(false);
-        progressDialog.setMessage("Loading...");
-        progressDialog.show();
-
         String userId = FirebaseHelper.instance.getCurrentUser().getUid();
         FirestoreRecyclerOptions<PersonalEmergencyContact> options = new FirestoreRecyclerOptions.Builder<PersonalEmergencyContact>()
-                .setQuery(FirebaseHelper.instance.getContactsDocument(userId), PersonalEmergencyContact.class)
+                .setQuery(FirebaseHelper.instance.getContactsDocument(userId, sortAscending), PersonalEmergencyContact.class)
                 .build();
+        initializeFirestoreAdapter(options);
+    }
 
-        adapter = new FirestoreRecyclerAdapter<PersonalEmergencyContact, PersonalEmergencyContactViewHolder>(options) {
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_personal_emergency_contact, container, false);
+
+        linearLayoutSort = view.findViewById(R.id.linearlayout_personal_emergency_contact_sort);
+        searchView = view.findViewById(R.id.search_view_personal_emergency_contact);
+        fabAddContact = view.findViewById(R.id.fab_personal_emergency_contact_add);
+        rvPersonalEmergencyContact = view.findViewById(R.id.rv_personal_emergency_contact);
+        tvPersonalEmergencyContactEmpty = view.findViewById(R.id.tv_personal_emergency_contact_empty);
+        tvSortAz = view.findViewById(R.id.tv_personal_emergency_contact_a_z);
+        circularProgressIndicator = view.findViewById(R.id.circularProgressIndicator);
+
+        registerForContextMenu(rvPersonalEmergencyContact);
+
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        circularProgressIndicator.setVisibility(View.VISIBLE);
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                searchPersonalEmergencyContact(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                searchPersonalEmergencyContact(newText);
+                return false;
+            }
+        });
+        searchView.setOnClickListener(this);
+        linearLayoutSort.setOnClickListener(this);
+        fabAddContact.setOnClickListener(this);
+
+        rvPersonalEmergencyContact.setHasFixedSize(true);
+        rvPersonalEmergencyContact.setLayoutManager(new LinearLayoutManager(getContext()));
+        rvPersonalEmergencyContact.setAdapter(adapter);
+    }
+
+    @Override
+    public void onClick(View v) {
+        int viewId = v.getId();
+
+        if (viewId == fabAddContact.getId()) {
+            startActivity(new Intent(getContext(), AddPersonalEmergencyContactActivity.class));
+        } else if (viewId == searchView.getId()) {
+            searchView.onActionViewExpanded();
+        } else if (viewId == linearLayoutSort.getId()) {
+            sortAscending = !sortAscending;
+            if (sortAscending) {
+                tvSortAz.setText(R.string.personal_emergency_contact_tv_a_z);
+            } else {
+                tvSortAz.setText(R.string.personal_emergency_contact_tv_z_a);
+            }
+
+            String userId = FirebaseHelper.instance.getCurrentUser().getUid();
+            FirestoreRecyclerOptions<PersonalEmergencyContact> options = new FirestoreRecyclerOptions.Builder<PersonalEmergencyContact>()
+                    .setQuery(FirebaseHelper.instance.getContactsDocument(userId, sortAscending), PersonalEmergencyContact.class)
+                    .build();
+
+            this.adapter.updateOptions(options);
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        this.adapter.startListening();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        this.adapter.stopListening();
+    }
+
+    @Override
+    public void onCreateContextMenu(@NonNull ContextMenu menu, @NonNull View v, @Nullable ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+
+        MenuInflater inflater = getActivity().getMenuInflater();
+        inflater.inflate(R.menu.menu_context_menu_personal_emergency_contact, menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
+        int itemId = item.getItemId();
+
+        if (itemId == R.id.context_menu_personal_emergency_contact_edit) {
+            editContact();
+        } else if (itemId == R.id.context_menu_personal_emergency_contact_delete) {
+            deleteContact();
+        }
+
+        return super.onContextItemSelected(item);
+    }
+
+    private void searchPersonalEmergencyContact(String searchText) {
+        FirestoreRecyclerOptions<PersonalEmergencyContact> options;
+
+        String userId = FirebaseHelper.instance.getCurrentUser().getUid();
+
+        if (!searchText.equalsIgnoreCase("")) {
+            options = new FirestoreRecyclerOptions.Builder<PersonalEmergencyContact>()
+                    .setQuery(FirebaseHelper.instance.searchContactsDocument(userId, searchText.toLowerCase()), PersonalEmergencyContact.class)
+                    .build();
+        } else {
+            options = new FirestoreRecyclerOptions.Builder<PersonalEmergencyContact>()
+                    .setQuery(FirebaseHelper.instance.getContactsDocument(userId, sortAscending), PersonalEmergencyContact.class)
+                    .build();
+        }
+
+        this.adapter.updateOptions(options);
+    }
+
+    private void initializeFirestoreAdapter(FirestoreRecyclerOptions<PersonalEmergencyContact> options) {
+        this.adapter = new FirestoreRecyclerAdapter<PersonalEmergencyContact, PersonalEmergencyContactViewHolder>(options) {
             @Override
             public void onDataChanged() {
                 super.onDataChanged();
+                adapter.notifyDataSetChanged();
 
-                if (progressDialog.isShowing()) {
-                    progressDialog.dismiss();
-                }
+                circularProgressIndicator.setVisibility(View.GONE);
 
                 if (getItemCount() != 0) {
                     rvPersonalEmergencyContact.setVisibility(View.VISIBLE);
@@ -138,9 +259,7 @@ public class PersonalEmergencyContactFragment extends Fragment implements View.O
             @Override
             public void onError(@NonNull FirebaseFirestoreException e) {
                 super.onError(e);
-                if (progressDialog.isShowing()) {
-                    progressDialog.dismiss();
-                }
+                circularProgressIndicator.setVisibility(View.GONE);
 
                 Toast.makeText(getContext(), "Gagal memuat daftar kontak.", Toast.LENGTH_SHORT).show();
 
@@ -179,71 +298,6 @@ public class PersonalEmergencyContactFragment extends Fragment implements View.O
         };
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_personal_emergency_contact, container, false);
-
-        fabAddContact = view.findViewById(R.id.fab_personal_emergency_contact_add);
-        rvPersonalEmergencyContact = view.findViewById(R.id.rv_personal_emergency_contact);
-        tvPersonalEmergencyContactEmpty = view.findViewById(R.id.tv_personal_emergency_contact_empty);
-
-        return view;
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        fabAddContact.setOnClickListener(this);
-        rvPersonalEmergencyContact.setHasFixedSize(true);
-        rvPersonalEmergencyContact.setLayoutManager(new LinearLayoutManager(getContext()));
-        rvPersonalEmergencyContact.setAdapter(adapter);
-
-        registerForContextMenu(rvPersonalEmergencyContact);
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        adapter.startListening();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        adapter.stopListening();
-    }
-
-    @Override
-    public void onCreateContextMenu(@NonNull ContextMenu menu, @NonNull View v, @Nullable ContextMenu.ContextMenuInfo menuInfo) {
-        super.onCreateContextMenu(menu, v, menuInfo);
-
-        MenuInflater inflater = getActivity().getMenuInflater();
-        inflater.inflate(R.menu.menu_context_menu_personal_emergency_contact, menu);
-    }
-
-    @Override
-    public boolean onContextItemSelected(@NonNull MenuItem item) {
-        int itemId = item.getItemId();
-
-        if (itemId == R.id.context_menu_personal_emergency_contact_edit) {
-            editContact();
-        } else if (itemId == R.id.context_menu_personal_emergency_contact_delete) {
-            deleteContact();
-        }
-
-        return super.onContextItemSelected(item);
-    }
-
-    @Override
-    public void onClick(View v) {
-        int viewId = v.getId();
-
-        if (viewId == fabAddContact.getId()) {
-            startActivity(new Intent(getContext(), AddPersonalEmergencyContactActivity.class));
-        }
-    }
-
     private void editContact() {
         Intent intent = new Intent(getContext(), EditPersonalEmergencyContactActivity.class);
         Bundle bundle = new Bundle();
@@ -257,19 +311,43 @@ public class PersonalEmergencyContactFragment extends Fragment implements View.O
     private void deleteContact() {
         String currentUserId = FirebaseHelper.instance.getCurrentUser().getUid();
 
-        FirebaseHelper.instance.deleteContactDocument(currentUserId, selectedContact.getId())
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
+        MaterialAlertDialogBuilder confirmDialog = new MaterialAlertDialogBuilder(getContext());
+        confirmDialog.setTitle("Hapus Kontak");
+        confirmDialog.setMessage("Apakah anda yakin ingin menghapus kontak ini?");
+        confirmDialog
+                .setPositiveButton(R.string.dialog_delete, new DialogInterface.OnClickListener() {
                     @Override
-                    public void onSuccess(Void unused) {
-                        //adapter.notifyDataSetChanged();
-                        Toast.makeText(getContext(),"Kontak berhasil dihapus.", Toast.LENGTH_SHORT).show();
+                    public void onClick(DialogInterface dialog, int which) {
+                        circularProgressIndicator.setVisibility(View.VISIBLE);
+
+                        FirebaseHelper.instance.deleteContactDocument(currentUserId, selectedContact.getId())
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        circularProgressIndicator.setVisibility(View.GONE);
+                                    }
+                                })
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void unused) {
+                                        Toast.makeText(getContext(),"Kontak berhasil dihapus.", Toast.LENGTH_SHORT).show();
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Toast.makeText(getContext(), "Gagal menghapus kontak.", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
                     }
                 })
-                .addOnFailureListener(new OnFailureListener() {
+                .setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
                     @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(getContext(), "Gagal menghapus kontak.", Toast.LENGTH_SHORT).show();
+                    public void onClick(DialogInterface dialog, int which) {
+
                     }
                 });
+
+        confirmDialog.create().show();
     }
 }

@@ -23,34 +23,13 @@
           }
         },
         {
-          "client_id": "608917201216-rb66vcvf80fn3hq9cukrmi2reet65gaq.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyDAf92mliPzd2EKZzNf9HKnDwCKIoVxCHU"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "608917201216-rb66vcvf80fn3hq9cukrmi2reet65gaq.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:608917201216:android:7903aa9c269a2387409aa5",
-        "android_client_info": {
-          "package_name": "id.ac.umn.teslogin"
-        }
-      },
-      "oauth_client": [
+          "client_id": "608917201216-khjietl4bo45nk8ga5unj81v4c6out6o.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "id.ac.umn.if570.titik.koma.klikdarurat",
+            "certificate_hash": "7b13bfa49a162b5e4d47b622c9373ddcddfa8c51"
+          }
+        },
         {
           "client_id": "608917201216-rb66vcvf80fn3hq9cukrmi2reet65gaq.apps.googleusercontent.com",
           "client_type": 3

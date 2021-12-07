@@ -10,19 +10,11 @@
     <color name="transparent">#00000000</color>
 
     <!-- Custom -->
-    <color name="light_blue_500">#FF03A9f4</color>
+    <color name="light_blue_200">#FF81D4FA</color>
+    <color name="light_blue_500">#FF03A9F4</color>
     <color name="light_blue_700">#FF0288D1</color>
     <color name="gray">#FFE5E5E5</color>
 
-    <color name="colorPrimary">#FFFFFF</color>
-    <color name="colorPrimaryDark">#000</color>
-    <color name="colorAccent">#0094FF</color>
-    <color name="themeColor">#0094FF</color>
-
-    <color name="darkTextColor">#020000</color>
-    <color name="contentTextColor">#020000</color>
-    <color name="register_bk_color">#0094FF</color>
-    <color name="login_bk_color">#fff</color>
-    <color name="whiteTextColor">#fff</color>
-    <color name="primaryTextColor">#0094FF</color>
+    <color name="colorPrimary">@color/light_blue_500</color>
+    <color name="colorPrimaryDark">#FF000000</color>
 </resources>

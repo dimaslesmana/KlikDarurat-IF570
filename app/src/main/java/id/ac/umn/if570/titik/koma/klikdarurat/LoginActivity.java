@@ -2,15 +2,17 @@ package id.ac.umn.if570.titik.koma.klikdarurat;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import android.text.InputType;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,6 +20,9 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.progressindicator.CircularProgressIndicator;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -28,7 +33,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private TextView tvForgotPassword;
     private Button btnLogin;
     private Button btnRegisterAccount;
-    private ProgressBar progressBar;
+    private CircularProgressIndicator circularProgressIndicator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,13 +75,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             return;
         }
 
-        progressBar.setVisibility(View.VISIBLE);
+        circularProgressIndicator.setVisibility(View.VISIBLE);
 
         FirebaseHelper.instance.loginUser(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        progressBar.setVisibility(View.GONE);
+                        circularProgressIndicator.setVisibility(View.GONE);
                     }
                 })
                 .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
@@ -111,7 +116,65 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             startActivity(new Intent(this, RegisterActivity.class));
             finish();
         } else if (viewId == tvForgotPassword.getId()) {
-            Log.d("LoginActivity", "Forgot Password clicked");
+            MaterialAlertDialogBuilder passwordResetDialog = new MaterialAlertDialogBuilder(v.getContext());
+
+            TextInputLayout textInputLayoutForgotPassword = new TextInputLayout(v.getContext());
+            textInputLayoutForgotPassword.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+
+            textInputLayoutForgotPassword.setBoxBackgroundColor(ContextCompat.getColor(v.getContext(), android.R.color.white));
+            textInputLayoutForgotPassword.setBoxBackgroundMode(TextInputLayout.BOX_BACKGROUND_OUTLINE);
+            textInputLayoutForgotPassword.setHintTextAppearance(R.style.Base_Widget_MaterialComponents_TextInputLayout);
+
+            TextInputEditText inputResetEmail = new TextInputEditText(textInputLayoutForgotPassword.getContext());
+
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            layoutParams.setMargins(36, 36, 36, 36);
+
+            textInputLayoutForgotPassword.addView(inputResetEmail, layoutParams);
+
+            inputResetEmail.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+            inputResetEmail.setHint(R.string.hint_email);
+            inputResetEmail.setMaxLines(1);
+
+            passwordResetDialog.setTitle(R.string.label_reset_password);
+            passwordResetDialog.setView(textInputLayoutForgotPassword);
+
+            passwordResetDialog
+                    .setPositiveButton(R.string.dialog_send, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            circularProgressIndicator.setVisibility(View.VISIBLE);
+
+                            String email = inputResetEmail.getText().toString();
+                            FirebaseHelper.instance.getAuth().sendPasswordResetEmail(email)
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            circularProgressIndicator.setVisibility(View.GONE);
+                                        }
+                                    })
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void unused) {
+                                            Toast.makeText(LoginActivity.this, "Silakan cek email anda untuk atur ulang kata sandi.", Toast.LENGTH_LONG).show();
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            Toast.makeText(LoginActivity.this, "Permintaan atur ulang kata sandi gagal.", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                        }
+                    })
+                    .setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    });
+
+            passwordResetDialog.create().show();
         }
     }
 
@@ -121,6 +184,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         btnRegisterAccount = findViewById(R.id.btn_login_register_account);
         tvForgotPassword = findViewById(R.id.tv_login_forgot_password);
         btnLogin = findViewById(R.id.button_login_login);
-        progressBar = findViewById(R.id.progressBar);
+        circularProgressIndicator = findViewById(R.id.circularProgressIndicator);
     }
 }

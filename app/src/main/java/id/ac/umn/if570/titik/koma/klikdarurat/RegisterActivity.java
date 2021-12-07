@@ -9,14 +9,13 @@ import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -32,7 +31,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     private EditText etPassword;
     private Button btnRegister;
     private Button btnLoginAccount;
-    private ProgressBar progressBar;
+    private CircularProgressIndicator circularProgressIndicator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +53,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     private void createContactsCollection(String userId) {
         Map<String, Object> contact = new HashMap<>();
         contact.put("name", "EMPTY_RESERVED");
+        contact.put("_nameOrder", "EMPTY_RESERVED");
 
         FirebaseHelper.instance.createContactsCollection(userId, contact);
     }
@@ -104,7 +104,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             return;
         }
 
-        progressBar.setVisibility(View.VISIBLE);
+        circularProgressIndicator.setVisibility(View.VISIBLE);
 
         FirebaseHelper.instance.registerUser(email, password)
                 .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
@@ -124,7 +124,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
-                                        progressBar.setVisibility(View.GONE);
+                                        circularProgressIndicator.setVisibility(View.GONE);
                                     }
                                 })
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -150,7 +150,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        progressBar.setVisibility(View.GONE);
+                        circularProgressIndicator.setVisibility(View.GONE);
                         Toast.makeText(RegisterActivity.this, "Gagal membuat akun.", Toast.LENGTH_LONG).show();
                     }
                 });
@@ -176,6 +176,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         etPassword = ((TextInputLayout) findViewById(R.id.textInputLayout_register_password)).getEditText();
         btnLoginAccount = findViewById(R.id.btn_register_login_account);
         btnRegister = findViewById(R.id.button_register_register);
-        progressBar = findViewById(R.id.progressBar);
+        circularProgressIndicator = findViewById(R.id.circularProgressIndicator);
     }
 }

@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -16,6 +15,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.HashMap;
@@ -26,7 +26,7 @@ public class EditPersonalEmergencyContactActivity extends AppCompatActivity impl
     private EditText etName;
     private EditText etPhoneNumber;
     private Button btnSave;
-    private ProgressDialog progressDialog;
+    private CircularProgressIndicator circularProgressIndicator;
     private PersonalEmergencyContact selectedContact;
 
     @Override
@@ -47,10 +47,6 @@ public class EditPersonalEmergencyContactActivity extends AppCompatActivity impl
         }
 
         initView();
-
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setCancelable(false);
-        progressDialog.setMessage("Loading...");
 
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
@@ -96,9 +92,11 @@ public class EditPersonalEmergencyContactActivity extends AppCompatActivity impl
             return;
         }
 
-        progressDialog.show();
+        circularProgressIndicator.setVisibility(View.VISIBLE);
 
         Map<String, Object> updatedContact = new HashMap<>();
+        updatedContact.put("_nameSearch", contactName.toLowerCase());
+        updatedContact.put("_nameOrder", contactName.toUpperCase());
         updatedContact.put("name", contactName);
         updatedContact.put("phoneNumber", contactPhoneNumber);
 
@@ -106,9 +104,7 @@ public class EditPersonalEmergencyContactActivity extends AppCompatActivity impl
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        if (progressDialog.isShowing()) {
-                            progressDialog.dismiss();
-                        }
+                        circularProgressIndicator.setVisibility(View.GONE);
                     }
                 })
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -132,5 +128,6 @@ public class EditPersonalEmergencyContactActivity extends AppCompatActivity impl
         etName = ((TextInputLayout) findViewById(R.id.textInputLayout_edit_personal_emergency_contact_name)).getEditText();
         etPhoneNumber = ((TextInputLayout) findViewById(R.id.textInputLayout_edit_personal_emergency_contact_phone_number)).getEditText();
         btnSave = findViewById(R.id.btn_edit_personal_emergency_contact_save);
+        circularProgressIndicator = findViewById(R.id.circularProgressIndicator);
     }
 }
